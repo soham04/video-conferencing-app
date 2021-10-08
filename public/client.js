@@ -146,6 +146,7 @@ async function createOffer(rtcPeerConnection) {
     sdp: sessionDescription,
     roomId,
   })
+  console.log('sending offer');
 }
 
 async function createAnswer(rtcPeerConnection) {
