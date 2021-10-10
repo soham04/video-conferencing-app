@@ -29,7 +29,7 @@ app.use(passport.session())
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb+srv://soham:soham@cluster0.dfruy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+  await mongoose.connect(process.env.MONGO_DB_LINK);
   console.log("Connected to mongoDB");
 }
 
