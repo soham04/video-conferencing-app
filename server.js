@@ -16,7 +16,7 @@ const cookieSession = require('cookie-session')
 app.set('view engine', 'ejs');
 
 app.use(cookieSession({
-  maxAge: 24 * 60 * 60 * 1000, // in milliseconds
+  maxAge: 24 * 60 * 60 * 1000, // in milliseconds 
   keys: ["cokiekey"]
 }));
 
@@ -92,7 +92,8 @@ passport.use(
     }
   ));
 
-// home page -------------------------------------
+// ! AUTH CHECK | LANDING
+
 const authCheck = (req, res, next) => {
   console.log("Currect user" + req.user);
   if (req.user) {
@@ -102,21 +103,24 @@ const authCheck = (req, res, next) => {
   }
 };
 
+// ! HOME PAGE
+
 app.get('/', authCheck, (req, res) => {
   res.render("home", {})
 });
-// old page -------------------------------------
+
+// ! AUTH CHECK | DIRECT VIDEO CONFERENCE
 
 const authCheck2 = (req, res, next) => {
   console.log("Currect user" + req.user);
   if (req.user) {
     next();
-    // res.redirect('/old');
   } else {
     res.redirect('/')
-    // next();
   }
 };
+
+// ! VIDEO CONFERNCE PAGE
 
 app.get('/old', authCheck2, (req, res) => {
   console.log("HERE USER : ");
@@ -126,11 +130,13 @@ app.get('/old', authCheck2, (req, res) => {
   res.render("index", { user: req.user.name, mail: req.user.emailId, image: req.user.photo })
 });
 
-//  login -----------------------------------
+// ! GOOGLE AUTH ROUTE
 
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email', 'openid'] }) // redirect to google singIn
 );
+
+// ! GOOGLE AUTH ROUTE CALLBACK
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/failed_login' }),
@@ -141,10 +147,14 @@ app.get('/auth/google/callback',
     res.redirect('/old');
   });
 
+// ! FAILED LOGIN
+
 app.get('/failed_login', (req, res) => {
   console.log(req);
   res.send("login fail")
 })
+
+// ! LOGED OUT
 
 app.get('/logout', function (req, res) {
   req.logout();
