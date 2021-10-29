@@ -77,6 +77,7 @@ passport.use(
                     // if not create the user in our db
                     console.log("Creating new user");
                     console.log(currentUser);
+
                     new User({
                         name: profile.displayName,
                         googleId: profile.id,
@@ -128,7 +129,7 @@ app.get('/old', authCheck2, (req, res) => {
     console.log(typeof (req));
     console.log(req.user.name);
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-    res.render("index", { user: req.user.name, mail: req.user.emailId, image: req.user.photo })
+    res.render("home_app", { user: req.user.name, mail: req.user.emailId, image: req.user.photo, googleId: req.user.googleId })
 });
 
 // ! GOOGLE AUTH ROUTE
@@ -199,47 +200,72 @@ app.get('/logout', function (req, res) {
 
 
 
-// socket ------------------------------------------
-io.on('connection', (socket) => {
-    socket.on('join', (roomId) => {
-        let selectedRoom = io.sockets.adapter.rooms[roomId]
-        let numberOfClients = selectedRoom ? selectedRoom.length : 0
 
-        // These events are emitted only to the sender socket.
-        if (numberOfClients == 0) {
-            console.log(`Creating room ${roomId} and emitting room_created socket event`)
-            socket.join(roomId)
-            socket.emit('room_created', roomId)
-        } else if (numberOfClients == 1) {
-            console.log(`Joining room ${roomId} Joining room ${roomId} and emitting room_joined socket event`)
-            socket.join(roomId)
-            socket.emit('room_joined', roomId)
-        } else {
-            console.log(`Can't join room ${roomId}, emitting full_room socket event`)
-            socket.emit('full_room', roomId)
-        }
-    })
+// const express = require('express')
+// const app = express()
+// const server = require('http').createServer(app)
+// const bodyParser = require("body-parser");
 
-    // These events are emitted to all the sockets connected to the same room except the sender.
-    socket.on('start_call', (roomId) => {
-        console.log(`Broadcasting start_call event to peers in room ${roomId}`)
-        socket.broadcast.to(roomId).emit('start_call')
-    })
-    socket.on('webrtc_offer', (event) => {
-        console.log(`Broadcasting webrtc_offer event to peers in room ${event.roomId}`)
-        socket.broadcast.to(event.roomId).emit('webrtc_offer', event.sdp)
-    })
-    socket.on('webrtc_answer', (event) => {
-        console.log(`Broadcasting webrtc_answer event to peers in room ${event.roomId}`)
-        socket.broadcast.to(event.roomId).emit('webrtc_answer', event.sdp)
-    })
-    socket.on('webrtc_ice_candidate', (event) => {
-        console.log(`Broadcasting webrtc_ice_candidate event to peers in room ${event.roomId}`)
-        socket.broadcast.to(event.roomId).emit('webrtc_ice_candidate', event)
-    })
+// app.set('view engine', 'ejs');
+
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+// app.use(express.static("public"));
+
+// ----------------------------------------------------------------------------------------
+// ! HOME PAGE - SENDING
+app.get('/', (req, res) => {
+    res.render("home")
 })
 
-// START THE SERVER =================================================================
+// ! Creating a Socket.io server for handling messages
+// const io = require('socket.io')(server)
+
+io.on('connection', (socket) => {
+
+    socket.on("join", (message) => {   // ! "JOIN"
+        let tmp = JSON.parse(message)
+
+        console.log(tmp.room);
+        socket.join(tmp.room)
+
+        if (message.length < 150)
+            console.log('<- Received: %s', message);
+        else {
+            console.log('<- Received: %s', message.slice(0, 50));
+        }
+
+        console.log("boradcasting to room :" + tmp.room);
+        socket.broadcast.to(tmp.room).emit("message_from_server", message)
+    })
+
+    socket.on("message_from_client", (message) => {
+        let tmp = JSON.parse(message)
+
+        if (message.length < 150)
+            console.log('<- Received: %s', message);
+        else {
+            console.log('<- Received: %s', message.slice(0, 50));
+        }
+        console.log("boradcasting to room :") + tmp.room;
+        socket.broadcast.to(tmp.room).emit("message_from_server", message)
+    })
+
+    socket.on('send-chat-message', message => { // ! "GROUP CHAT"
+        // let tmp = JSON.parse(message)
+        let tmp = message
+        console.log("-----" + message);
+        socket.broadcast.to(tmp.room).emit('chat-message', message)
+    })
+
+    socket.on('drawing', (data) => socket.broadcast.to(data.room).emit('drawing', data.data))
+})
+
+console.log('Server running.');
+
+// ----------------------------------------------------------------------------------------
+
+// ! LISTENING ON THE PORT FOR REQUESTS
 const port = process.env.PORT || 3000
 server.listen(port, () => {
     console.log(`Express server listening on port ${port}`)
