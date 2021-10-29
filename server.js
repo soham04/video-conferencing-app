@@ -12,7 +12,7 @@ const passportLocalMongoose = require("passport-local-mongoose")
 var findOrCreate = require('mongoose-findorcreate')
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session')
-const { v4: uuidv4 } = require('uuid');
+import { v4 as uuidv4 } from 'uuid';
 
 app.set('view engine', 'ejs');
 
