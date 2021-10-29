@@ -1,0 +1,31 @@
+<h5>
+    <%= user %>
+</h5>
+<h5>
+    <%= mail %>
+</h5>
+<h5>
+    <%= image %>
+</h5>
+<h5>
+    <%= googleId %>
+</h5>
+
+<a href="/makenew">gwnrerate room</a>
+
+<table border="1">
+    <% for(var i=0; i < room_hist.length; i++) { %>
+        <tr>
+            <td>
+                <%= room_hist[i].room_id %>
+            </td>
+            <td>
+                <%= room_hist[i].time %>
+            </td>
+        </tr>
+        <% } %>
+</table>
+<!-- <script>
+    let chat_history = "<%= room_hist %>"
+    let obj = JSON.parse(chat_history)
+</script> -->

@@ -71,7 +71,7 @@ function start() {
     // check if "&displayName=xxx" is appended to URL, otherwise alert user to populate
     // var urlParams = new URLSearchParams(window.location.search);
     // localDisplayName = prompt('Enter your name', '');
-    roomID = prompt('Room ID', '');
+    // roomID = prompt('Room ID', '');
     document.getElementById('localVideoContainer').appendChild(makeLabel(localDisplayName));
 
     // specify  audio for user media

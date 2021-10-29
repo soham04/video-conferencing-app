@@ -28,6 +28,8 @@
   <h5>
     <%= googleId %>
   </h5>
+  <h5>gernerated room id = <%= roomid %>
+  </h5>
 
   <div id="message-container"></div>
   <div id="send-container">
@@ -71,6 +73,7 @@
   <!-- <script src="/js/screen.js"></script> -->
   <script>
     localDisplayName = "<%= user %>"
+    roomID = "<%= roomid %>"
   </script>
   <script type="text/javascript">
     start();

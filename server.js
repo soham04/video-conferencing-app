@@ -12,6 +12,7 @@ const passportLocalMongoose = require("passport-local-mongoose")
 var findOrCreate = require('mongoose-findorcreate')
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session')
+const { v4: uuidv4 } = require('uuid');
 
 app.set('view engine', 'ejs');
 
@@ -98,7 +99,7 @@ passport.use(
 const authCheck = (req, res, next) => {
     console.log("Currect user" + req.user);
     if (req.user) {
-        res.redirect('/old');
+        res.redirect('/dash');
     } else {
         next();
     }
@@ -122,14 +123,47 @@ const authCheck2 = (req, res, next) => {
 };
 
 // ! VIDEO CONFERNCE PAGE
+const room_history_schema = new mongoose.Schema({
+    room_id: { type: String },
+    user_id: { type: String },
+    time: { type: Date, default: Date.now },
+    chats: {
+        type: [{
+            senders_name: String,
+            message: String,
+            time: Date
+        }], default: []
+    }
+});
 
-app.get('/old', authCheck2, (req, res) => {
+const room_history = mongoose.model('room_history', room_history_schema);
+
+app.get('/dash', authCheck2, (req, res) => {
     console.log("HERE USER : ");
     console.log(req.user);
     console.log(typeof (req));
     console.log(req.user.name);
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-    res.render("home_app", { user: req.user.name, mail: req.user.emailId, image: req.user.photo, googleId: req.user.googleId })
+    // res.render("home_app", { user: req.user.name, mail: req.user.emailId, image: req.user.photo, googleId: req.user.googleId })
+    // let query = room_history.find({ user_id: req.user.googleId })
+    // let room_history = query.getFilter()
+    let room_hist
+    // res.send("i")
+    room_history.find({ user_id: req.user.googleId }, function (err, docs) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log("Second function call : ", docs);
+            // room_hist = JSON.stringify(docs)
+            room_hist = docs
+            console.log(room_hist);
+            res.render("dash", { user: req.user.name, mail: req.user.emailId, image: req.user.photo, googleId: req.user.googleId, room_hist: room_hist })
+        }
+    });
+    // console.log(room_hist);
+
+
 });
 
 // ! GOOGLE AUTH ROUTE
@@ -146,7 +180,7 @@ app.get('/auth/google/callback',
         // Successful authentication, redirect home.
         console.log("Successful authentication of user : \n" + req.user);
         console.log("Redirecting to /old");
-        res.redirect('/old');
+        res.redirect('/dash');
     });
 
 // ! FAILED LOGIN
@@ -162,6 +196,36 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.send("LOGED OUT");
 });
+
+app.get("/makenew", (req, res) => {
+    let roomid = uuidv4()
+    res.redirect("room/" + roomid)
+})
+
+
+app.get("/room/:roomid", (req, res) => {
+    let roomid = req.params.roomid
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+
+    room_history.countDocuments({ room_id: roomid }, function (err, count) {
+        if (count > 0) {
+            //document exists });
+        } else {
+            const newMeet = new room_history({
+                room_id: roomid,
+                user_id: req.user.googleId,
+                chats: [{ "senders_name": req.user.name, "message": req.user.name + " Joined", "time": Date.now() }]
+            });
+            newMeet.save()
+        }
+    });
+
+    res.render("home_app", { user: req.user.name, mail: req.user.emailId, image: req.user.photo, googleId: req.user.googleId, roomid: roomid })
+
+})
+
+
+
 
 
 
@@ -253,6 +317,39 @@ io.on('connection', (socket) => {
 
     socket.on('send-chat-message', message => { // ! "GROUP CHAT"
         // let tmp = JSON.parse(message)
+        let tmp_obj = { senders_name: message.displayname, message: message.message, time: Date.now() }
+        console.log(tmp_obj);
+        // let tmp_obj = { senders_name: message.displayname, message: message.message, time: Date.now() }
+
+        room_history.updateOne(
+            { room_id: message.room },
+            { $push: { chats: tmp_obj } }
+        );
+        room_history.update(
+            { room_id: message.room },
+            {
+                $push: {
+                    chats: {
+                        $each: [tmp_obj],
+                        $sort: { time: -1 },
+                        $slice: 3
+                    }
+                }
+            }
+        )
+
+        // room_history.update(
+        //     { "room_id": message.room },
+        //     {
+        //         $push: {
+        //             "chats": {
+        //                 $each: [{ "senders_name": message.displayname, "message": message.message, "time": Date.now() }],
+        //                 $sort: { time: 1 }
+        //             }
+        //         }
+        //     }
+        // )
+
         let tmp = message
         console.log("-----" + message);
         socket.broadcast.to(tmp.room).emit('chat-message', message)
