@@ -12,7 +12,7 @@ const passportLocalMongoose = require("passport-local-mongoose")
 var findOrCreate = require('mongoose-findorcreate')
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session')
-const { v4: uuidv4 } = require('uuid');
+// const { v4: uuidv4 } = require('uuid');
 
 app.set('view engine', 'ejs');
 
@@ -196,6 +196,12 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.send("LOGED OUT");
 });
+
+function uuidv4() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
 
 app.get("/makenew", (req, res) => {
     let roomid = uuidv4()
