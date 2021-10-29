@@ -59,7 +59,7 @@ passport.use(
     new GoogleStrategy({
         clientID: process.env.clientID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/auth/google/callback",
+        callbackURL: "http://evening-anchorage-97986.herokuapp.com/auth/google/callback",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     },
         function (accessToken, refreshToken, profile, done) {
