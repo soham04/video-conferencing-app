@@ -11,6 +11,7 @@ const passport = require("passport")
 const passportLocalMongoose = require("passport-local-mongoose")
 var findOrCreate = require('mongoose-findorcreate')
 const mongoose = require('mongoose');
+var path = require('path');
 const cookieSession = require('cookie-session')
 // const { v4: uuidv4 } = require('uuid');
 
@@ -104,6 +105,12 @@ const authCheck = (req, res, next) => {
         next();
     }
 };
+
+// SSL verification
+
+app.get('/.well-known/pki-validation/2D612E6A40D7726C193A28AE10DA086F.txt', (req, res) => {
+    res.download(__dirname + "/2D612E6A40D7726C193A28AE10DA086F.txt")
+})
 
 // ! HOME PAGE
 
