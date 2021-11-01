@@ -149,7 +149,7 @@ function start() {
                 screenShareButton.addEventListener('click', e => {
                     console.log("adding screen stream");
                     e.preventDefault()
-                    startScreenShare()
+                    start_screen_share()
                     // const screenStream = await navigator.mediaDevices.getDisplayMedia();
 
                     // navigator.mediaDevices.getDisplayMedia().then(screenStream => {
