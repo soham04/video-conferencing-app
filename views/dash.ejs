@@ -1,31 +1,234 @@
-<h5>
-    <%= user %>
-</h5>
-<h5>
-    <%= mail %>
-</h5>
-<h5>
-    <%= image %>
-</h5>
-<h5>
-    <%= googleId %>
-</h5>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<a href="/makenew">gwnrerate room</a>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/lineicons.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css"
+    />
+    <link rel="stylesheet" href="/css/animate.css" />
+    <link rel="stylesheet" href="/css/style.css" />
 
-<table border="1">
-    <% for(var i=0; i < room_hist.length; i++) { %>
-        <tr>
-            <td>
-                <%= room_hist[i].room_id %>
-            </td>
-            <td>
-                <%= room_hist[i].time %>
-            </td>
-        </tr>
-        <% } %>
-</table>
-<!-- <script>
-    let chat_history = "<%= room_hist %>"
-    let obj = JSON.parse(chat_history)
-</script> -->
+    <title>Hello, world!</title>
+  </head>
+
+  <body>
+    <!--Create Modal -->
+    <div
+      class="modal fade"
+      id="createMeetModal"
+      tabindex="-1"
+      aria-labelledby="createMeetModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createMeetModalLabel">
+              Create Meeting
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <input
+                id="create-meet-name"
+                placeholder="Eg: Developers Space"
+                class="form-control"
+                type="text"
+              />
+            </div>
+            <select class="form-select" aria-label="Default select example">
+              <option selected>Select Space</option>
+              <option value="1">Design</option>
+              <option value="2">Development</option>
+              <option value="3">Study</option>
+              <option value="4">Buissness</option>
+              <option value="5">Entertainment</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <a href="/makenew" class="btn btn-voilet">
+              <i class="lni lni-video"></i> create
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Join Modal -->
+    <div
+      class="modal fade"
+      id="joinMeetModal"
+      tabindex="-1"
+      aria-labelledby="joinMeetModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="joinMeetModalLabel">Enter Join Code</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="join-meet">
+              <input
+                id="join-meet-code"
+                placeholder="Eg: xcg-edf-asd"
+                class="form-control"
+                type="text"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a type="button" class="btn btn-voilet" id="join-meet-btn">
+              <i class="lni lni-video"></i> Join
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dashboard">
+      <div class="dashboard__navigation">
+        <div class="dashboard__navigation--logo">
+          <img src="/img/logo/logo-color-square.svg" alt="" />
+        </div>
+        <div class="meet-btns">
+          <button
+            class="btn btn-voilet btn-create-meet"
+            data-bs-toggle="modal"
+            data-bs-target="#createMeetModal"
+          >
+            <i class="lni lni-video"></i> Create a Meeting
+          </button>
+          <button
+            class="btn btn-outline-voilet btn-join-meet"
+            data-bs-toggle="modal"
+            data-bs-target="#joinMeetModal"
+          >
+            <i class="lni lni-bubble"></i>JoinMeeting
+          </button>
+        </div>
+        <div class="dashboard__navigation--profile">
+          <div class="dropdown">
+            <a
+              class="dropdown-toggle"
+              type="button"
+              id="dashboardProfile"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <p><%= user %></p>
+              <span><img src="<%= image %>" alt="" /></span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dashboardProfile">
+              <li>
+                <a class="dropdown-item" href="/logout">
+                  <i class="fi fi-rr-sign-in"></i>Sign Out
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="dashboard__main">
+        <nav class="dashboard__lsidenav">
+          <ul>
+            <li>
+              <a href="" class="active"
+                ><i class="fi fi-sr-presentation"></i> Meetings</a
+              >
+            </li>
+            <li>
+              <a href="" class=""><i class="fi fi-sr-user"></i> Profile</a>
+            </li>
+            <li>
+              <a href="" class=""><i class="fi fi-sr-life-ring"></i> Help</a>
+            </li>
+            <li>
+              <a href="" class=""><i class="fi fi-br-sign-in"></i> Log Out</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="dashboard__meetings">
+          <ul>
+            <li>
+              <div class="dashboard__meetings--logo">
+                <i class="lni lni-slideshare"></i>
+              </div>
+              <p>Design Convos</p>
+              <span>20 Dec, 2020</span>
+            </li>
+          </ul>
+        </div>
+        <div class="conference__chat active">
+          <div class="conference__chat--items">
+            <div class="conference__chat--item">
+              <div class="conference__chat--item-icon">
+                <img src="./assets/img/meet/user-1.jpg" alt="" />
+              </div>
+              <div class="conference__chat--item-message">
+                Hey everyone, let's start the call now
+              </div>
+              <div class="conference__chat--item-detail">10:00 am, Alexa</div>
+            </div>
+            <div class="conference__chat--item conference__chat--item-user">
+              <div class="conference__chat--item-icon">
+                <img src="./assets/img/meet/user-5.jpg" alt="" />
+              </div>
+              <div class="conference__chat--item-message">
+                I am calling for oyher people to join, just a littile wait and
+                we'll be in the meet.
+              </div>
+              <div class="conference__chat--item-detail">10:00 am, Lousi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const join_meet_input = document.querySelector("#join-meet-code");
+      const join_meet_btn = document.querySelector("#join-meet-btn");
+      join_meet_btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        join_meet_url = join_meet_input.value;
+        location.href = `http://localhost:3000/room/${join_meet_url}`;
+      });
+    </script>
+  </body>
+</html>

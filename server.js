@@ -22,7 +22,9 @@ app.use(cookieSession({
     keys: ["cokiekey"]
 }));
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(express.static("public"));
 
 app.use(passport.initialize())
@@ -58,17 +60,19 @@ passport.deserializeUser((id, done) => {
 passport.use(
 
     new GoogleStrategy({
-        clientID: process.env.clientID,
-        clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: "http://evening-anchorage-97986.herokuapp.com/auth/google/callback",
-        userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-    },
+            clientID: process.env.clientID,
+            clientSecret: process.env.CLIENT_SECRET,
+            callbackURL: "/auth/google/callback",
+            userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+        },
         function (accessToken, refreshToken, profile, done) {
             console.log('passport callback function fired:');
             console.log(profile);
             // check if the user already exists in our DB
 
-            User.findOne({ googleId: profile.id }).then((currentUser) => {
+            User.findOne({
+                googleId: profile.id
+            }).then((currentUser) => {
                 if (currentUser) {
                     // already have the user
                     console.log("User already made");
@@ -131,15 +135,23 @@ const authCheck2 = (req, res, next) => {
 
 // ! VIDEO CONFERNCE PAGE
 const room_history_schema = new mongoose.Schema({
-    room_id: { type: String },
-    user_id: { type: String },
-    time: { type: Date, default: Date.now },
+    room_id: {
+        type: String
+    },
+    user_id: {
+        type: String
+    },
+    time: {
+        type: Date,
+        default: Date.now
+    },
     chats: {
         type: [{
             senders_name: String,
             message: String,
             time: Date
-        }], default: []
+        }],
+        default: []
     }
 });
 
@@ -156,16 +168,23 @@ app.get('/dash', authCheck2, (req, res) => {
     // let room_history = query.getFilter()
     let room_hist
     // res.send("i")
-    room_history.find({ user_id: req.user.googleId }, function (err, docs) {
+    room_history.find({
+        user_id: req.user.googleId
+    }, function (err, docs) {
         if (err) {
             console.log(err);
-        }
-        else {
+        } else {
             console.log("Second function call : ", docs);
             // room_hist = JSON.stringify(docs)
             room_hist = docs
             console.log(room_hist);
-            res.render("dash", { user: req.user.name, mail: req.user.emailId, image: req.user.photo, googleId: req.user.googleId, room_hist: room_hist })
+            res.render("dash", {
+                user: req.user.name,
+                mail: req.user.emailId,
+                image: req.user.photo,
+                googleId: req.user.googleId,
+                room_hist: room_hist
+            })
         }
     });
     // console.log(room_hist);
@@ -176,13 +195,17 @@ app.get('/dash', authCheck2, (req, res) => {
 // ! GOOGLE AUTH ROUTE
 
 app.get('/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email', 'openid'] }) // redirect to google singIn
+    passport.authenticate('google', {
+        scope: ['profile', 'email', 'openid']
+    }) // redirect to google singIn
 );
 
 // ! GOOGLE AUTH ROUTE CALLBACK
 
 app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/failed_login' }),
+    passport.authenticate('google', {
+        failureRedirect: '/failed_login'
+    }),
     function (req, res) {
         // Successful authentication, redirect home.
         console.log("Successful authentication of user : \n" + req.user);
@@ -205,14 +228,14 @@ app.get('/logout', function (req, res) {
 });
 
 function generateUUID() { // Public Domain/MIT
-    var d = new Date().getTime();//Timestamp
-    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+    var d = new Date().getTime(); //Timestamp
+    var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0; //Time in microseconds since page-load or 0 if unsupported
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16;//random number between 0 and 16
-        if (d > 0) {//Use timestamp until depleted
+        var r = Math.random() * 16; //random number between 0 and 16
+        if (d > 0) { //Use timestamp until depleted
             r = (d + r) % 16 | 0;
             d = Math.floor(d / 16);
-        } else {//Use microseconds since page-load if supported
+        } else { //Use microseconds since page-load if supported
             r = (d2 + r) % 16 | 0;
             d2 = Math.floor(d2 / 16);
         }
@@ -230,20 +253,32 @@ app.get("/room/:roomid", (req, res) => {
     let roomid = req.params.roomid
     res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
 
-    room_history.countDocuments({ room_id: roomid }, function (err, count) {
+    room_history.countDocuments({
+        room_id: roomid
+    }, function (err, count) {
         if (count > 0) {
             //document exists });
         } else {
             const newMeet = new room_history({
                 room_id: roomid,
                 user_id: req.user.googleId,
-                chats: [{ "senders_name": req.user.name, "message": req.user.name + " Joined", "time": Date.now() }]
+                chats: [{
+                    "senders_name": req.user.name,
+                    "message": req.user.name + " Joined",
+                    "time": Date.now()
+                }]
             });
             newMeet.save()
         }
     });
 
-    res.render("home_app", { user: req.user.name, mail: req.user.emailId, image: req.user.photo, googleId: req.user.googleId, roomid: roomid })
+    res.render("home_app", {
+        user: req.user.name,
+        mail: req.user.emailId,
+        image: req.user.photo,
+        googleId: req.user.googleId,
+        roomid: roomid
+    })
 
 })
 
@@ -310,7 +345,7 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
 
-    socket.on("join", (message) => {   // ! "JOIN"
+    socket.on("join", (message) => { // ! "JOIN"
         let tmp = JSON.parse(message)
 
         console.log(tmp.room);
@@ -340,26 +375,34 @@ io.on('connection', (socket) => {
 
     socket.on('send-chat-message', message => { // ! "GROUP CHAT"
         // let tmp = JSON.parse(message)
-        let tmp_obj = { senders_name: message.displayname, message: message.message, time: Date.now() }
+        let tmp_obj = {
+            senders_name: message.displayname,
+            message: message.message,
+            time: Date.now()
+        }
         console.log(tmp_obj);
         // let tmp_obj = { senders_name: message.displayname, message: message.message, time: Date.now() }
 
-        room_history.updateOne(
-            { room_id: message.room },
-            { $push: { chats: tmp_obj } }
-        );
-        room_history.update(
-            { room_id: message.room },
-            {
-                $push: {
-                    chats: {
-                        $each: [tmp_obj],
-                        $sort: { time: -1 },
-                        $slice: 3
-                    }
+        room_history.updateOne({
+            room_id: message.room
+        }, {
+            $push: {
+                chats: tmp_obj
+            }
+        });
+        room_history.update({
+            room_id: message.room
+        }, {
+            $push: {
+                chats: {
+                    $each: [tmp_obj],
+                    $sort: {
+                        time: -1
+                    },
+                    $slice: 3
                 }
             }
-        )
+        })
 
         // room_history.update(
         //     { "room_id": message.room },

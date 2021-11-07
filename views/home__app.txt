@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/whiteBord.css">
+
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <!-- <script src="/js/webrtc.js"></script> -->
+  <script src="https://cdn.socket.io/4.2.0/socket.io.min.js"
+    integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj"
+    crossorigin="anonymous"></script>
+  <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+
+<body>
+  <h5>
+    <%= user %>
+  </h5>
+  <h5>
+    <%= mail %>
+  </h5>
+  <h5>
+    <%= image %>
+  </h5>
+  <h5>
+    <%= googleId %>
+  </h5>
+  <h5>gernerated room id = <%= roomid %>
+  </h5>
+
+  <div id="message-container"></div>
+  <div id="send-container">
+    <input type="text" id="message-input">
+    <button id="send-button">Send</button>
+  </div>
+
+  <div>
+    <button id="stop-stream">PAUSE 📸</button>
+    <button id="start-stream">RESUME ⏯</button>
+    <button id="record-button">RECORD🔴</button>
+    <button id="stop-record-button">STOP RECORD🟥</button>
+    <button id="screen-share-button">SCREEN SHARE📺</button>
+  </div>
+
+  <div id="videos" class="videos">
+    <div id="localVideoContainer" class="videoContainer">
+      <video id="localVideo" autoplay muted></video>
+    </div>
+    <!-- Remote videos get appended here -->
+  </div>
+
+  <div class="videos">
+    <div class="videoContainer">
+      <video id="recording" autoplay></video>
+    </div>
+  </div>
+
+  <canvas class="whiteboard"></canvas>
+
+  <div class="colors">
+    <div class="color black"></div>
+    <div class="color red"></div>
+    <div class="color green"></div>
+    <div class="color blue"></div>
+    <div class="color yellow"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/webrtc.js"></script>
+  <script src="/js/screen.js"></script>
+  <script>
+    localDisplayName = "<%= user %>"
+    roomID = "<%= roomid %>"
+  </script>
+  <script type="text/javascript">
+    start();
+  </script>
+
+</body>
+
+</html>
