@@ -1,3 +1,5 @@
+const { Code } = require("bson");
+
 var localUuid;
 var localDisplayName;
 var localStream;
@@ -16,6 +18,7 @@ var recorder;
 var stopRecordButton;
 let recordingStream;
 let screenShareButton;
+let videoChanger;
 
 // White Board vairable ----------------------------------
 
@@ -134,7 +137,22 @@ function start() {
         socket.on("chat-message", (data) => {
           // let tmp = JSON.parse(data)
 
-          appendMessage(`${data.displayname}: ${data.message}`);
+          // JSON structure
+          // message: message,
+          // room: roomID,
+          // uuid: localUuid,
+          // displayname: localDisplayName,
+          // proPic: proPic,
+          // use '.' to access these
+          // eg. data.proPic
+
+          if (data.uuid == localUuid) {
+            appendMessage(true, data)
+          }
+          else {
+            appendMessage(false, data)
+          }
+          // appendMessage(`${data.displayname}: ${data.message}`);
         });
 
         messageButton.addEventListener("click", (e) => {
@@ -147,6 +165,7 @@ function start() {
             room: roomID,
             uuid: localUuid,
             displayname: localDisplayName,
+            proPic: proPic,
           });
           messageInput.value = "";
         });
@@ -161,18 +180,28 @@ function start() {
         screenShareButton.addEventListener("click", (e) => {
           console.log("adding screen stream");
           e.preventDefault();
-          start_screen_share();
-          // const screenStream = await navigator.mediaDevices.getDisplayMedia();
+          // videoChanger
 
-          // navigator.mediaDevices.getDisplayMedia().then(screenStream => {
-          //     var peerC;
-          //     for (var key in peerConnections) {
-          //         peerC = peerConnections[key];
-          //         // your code here...
-          //         peerC.pc.addStream(screenStream)
-          //     }
-          //     start()
-          // }).catch(errorHandler)
+          if (navigator.mediaDevices.getDisplayMedia) {
+            navigator.mediaDevices
+              .getDisplayMedia()
+              .then((stream) => {
+
+                videoChanger.replaceTrack(stream.getVideoTracks())
+              })
+          }
+
+          // Code to again adding the local stream 
+
+          // if (navigator.mediaDevices.getUserMedia) {
+          //   navigator.mediaDevices
+          //     .getUserMedia()
+          //     .then((stream) => {
+
+          //       videoChanger.replaceTrack(stream.getVideoTracks())
+          //     })
+          // }
+          
         });
 
         stopRecordButton.addEventListener("click", (e) => {
@@ -226,18 +255,16 @@ function start() {
 
 function appendMessage(message) {
   const img = `/img/meet/user-1.jpg`;
-  const msgElm = `<div class="conference__chat--item ${
-    message.split(":")[0] == "You" ? "conference__chat--item-user" : ""
-  }">
+  const msgElm = `<div class="conference__chat--item ${message.split(":")[0] == "You" ? "conference__chat--item-user" : ""
+    }">
                 <div class="conference__chat--item-icon">
                   <img src="${img}" alt="" />
                 </div>
                 <div class="conference__chat--item-message">
                   ${message.slice(message.split(":")[0].length + 1)}
                 </div>
-                <div class="conference__chat--item-detail">10:00 am, ${
-                  message.split(":")[0]
-                }</div>
+                <div class="conference__chat--item-detail">10:00 am, ${message.split(":")[0]
+    }</div>
               </div>`;
   const participantElem = ` <div class="conference__participants--item">
                 <div class="conference__participants--item-img">
@@ -246,9 +273,9 @@ function appendMessage(message) {
                 <div class="conference__participants--item-desc">
                   <div class="conference__participants--item-name">
                     ${message
-                      .split(":")[0]
-                      .replace("Connected", "")
-                      .replace("+ ", "")}
+      .split(":")[0]
+      .replace("Connected", "")
+      .replace("+ ", "")}
                   </div>
                   <div class="conference__participants--item-subname">
                     User
@@ -386,11 +413,9 @@ function gotMessageFromServer(message) {
   console.log("-> Got message : \n" + signal);
   var peerUuid = signal.uuid;
   console.log(peerUuid);
+
   // Ignore messages that are not for us or from ourselves
-  if (
-    peerUuid == localUuid ||
-    (signal.dest != localUuid && signal.dest != "all")
-  )
+  if (peerUuid == localUuid || (signal.dest != localUuid && signal.dest != "all"))
     return;
 
   if (signal.displayName && signal.dest == "all") {
@@ -442,7 +467,7 @@ function setUpPeer(peerUuid, displayName, initCall = false) {
   // peerConnections[peerUuid].pc.addStream(localStream);
 
   localStream.getTracks().forEach((track) => {
-    peerConnections[peerUuid].pc.addTrack(track, localStream);
+    videoChanger = peerConnections[peerUuid].pc.addTrack(track, localStream);
   });
 
   if (initCall) {
