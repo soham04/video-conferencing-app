@@ -1,5 +1,3 @@
-const { Code } = require("bson");
-
 var localUuid;
 var localDisplayName;
 var localStream;
@@ -34,11 +32,21 @@ var peerConnectionConfig = {
   iceServers: [
     // { 'urls': 'stun:stun.stunprotocol.org:3478' },
     // { 'urls': 'stun:stun.l.google.com:19302' },
-    { urls: "stun:stun.l.google.com:19302" },
-    { urls: "stun:stun1.l.google.com:19302" },
-    { urls: "stun:stun2.l.google.com:19302" },
-    { urls: "stun:stun3.l.google.com:19302" },
-    { urls: "stun:stun4.l.google.com:19302" },
+    {
+      urls: "stun:stun.l.google.com:19302",
+    },
+    {
+      urls: "stun:stun1.l.google.com:19302",
+    },
+    {
+      urls: "stun:stun2.l.google.com:19302",
+    },
+    {
+      urls: "stun:stun3.l.google.com:19302",
+    },
+    {
+      urls: "stun:stun4.l.google.com:19302",
+    },
   ],
 };
 
@@ -85,9 +93,15 @@ function start() {
   // specify  audio for user media
   var constraints = {
     video: {
-      width: { max: 320 },
-      height: { max: 240 },
-      frameRate: { max: 30 },
+      width: {
+        max: 320,
+      },
+      height: {
+        max: 240,
+      },
+      frameRate: {
+        max: 30,
+      },
     },
     audio: true,
   };
@@ -147,10 +161,9 @@ function start() {
           // eg. data.proPic
 
           if (data.uuid == localUuid) {
-            appendMessage(true, data)
-          }
-          else {
-            appendMessage(false, data)
+            appendMessage(true, data);
+          } else {
+            appendMessage(false, data);
           }
           // appendMessage(`${data.displayname}: ${data.message}`);
         });
@@ -159,7 +172,14 @@ function start() {
           e.preventDefault();
           console.log("clciked send meesage button");
           const message = messageInput.value;
-          appendMessage(`You: ${message}`);
+          // appendMessage(`You: ${message}`);
+          appendMessage(true, {
+            message: message,
+            room: roomID,
+            uuid: localUuid,
+            displayname: localDisplayName,
+            proPic: proPic,
+          });
           socket.emit("send-chat-message", {
             message: message,
             room: roomID,
@@ -183,15 +203,12 @@ function start() {
           // videoChanger
 
           if (navigator.mediaDevices.getDisplayMedia) {
-            navigator.mediaDevices
-              .getDisplayMedia()
-              .then((stream) => {
-
-                videoChanger.replaceTrack(stream.getVideoTracks())
-              })
+            navigator.mediaDevices.getDisplayMedia().then((stream) => {
+              videoChanger.replaceTrack(stream.getVideoTracks()[0]);
+            });
           }
 
-          // Code to again adding the local stream 
+          // Code to again adding the local stream
 
           // if (navigator.mediaDevices.getUserMedia) {
           //   navigator.mediaDevices
@@ -201,7 +218,6 @@ function start() {
           //       videoChanger.replaceTrack(stream.getVideoTracks())
           //     })
           // }
-          
         });
 
         stopRecordButton.addEventListener("click", (e) => {
@@ -243,7 +259,13 @@ function start() {
         // recordingStream.srcObject =
 
         // ! CHAT MESSAGE OF JOINING
-        appendMessage("You joined");
+        appendMessage(true, {
+          message: "Joined",
+          room: roomID,
+          uuid: localUuid,
+          displayname: localDisplayName,
+          proPic: proPic,
+        });
       })
       .catch(errorHandler);
   } else {
@@ -252,30 +274,30 @@ function start() {
 }
 
 // ! Messenger -------------------------------------------------------
+let x = "";
 
-function appendMessage(message) {
-  const img = `/img/meet/user-1.jpg`;
-  const msgElm = `<div class="conference__chat--item ${message.split(":")[0] == "You" ? "conference__chat--item-user" : ""
-    }">
+function appendMessage(owner, data) {
+  console.log(data);
+  const msgElm = `<div class='conference__chat--item ${
+    owner ? "conference__chat--item-user" : ""
+  }'>
                 <div class="conference__chat--item-icon">
-                  <img src="${img}" alt="" />
+                  <img src="${data.proPic}" alt="" />
                 </div>
                 <div class="conference__chat--item-message">
-                  ${message.slice(message.split(":")[0].length + 1)}
+                  ${data.message}
                 </div>
-                <div class="conference__chat--item-detail">10:00 am, ${message.split(":")[0]
-    }</div>
+                <div class="conference__chat--item-detail">10:00 am, ${
+                  data.displayname
+                }</div>
               </div>`;
   const participantElem = ` <div class="conference__participants--item">
                 <div class="conference__participants--item-img">
-                  <img src="${img}" alt="" />
+                  <img src="${data.proPic}" alt="" />
                 </div>
                 <div class="conference__participants--item-desc">
                   <div class="conference__participants--item-name">
-                    ${message
-      .split(":")[0]
-      .replace("Connected", "")
-      .replace("+ ", "")}
+                    ${data.displayname}
                   </div>
                   <div class="conference__participants--item-subname">
                     User
@@ -291,15 +313,12 @@ function appendMessage(message) {
                 </div>
               </div>`;
 
-  if (message.includes("joined") || message.includes("Connected")) {
-    const notifElm = `<div style='display:flex;justify-content:center;'><p style='display:inline-block;padding: 5px 8px; background: #ff39821a;color:#555;margin:10px auto;border-radius:10px;font-size:13px;font-weight:700'>${message.replace(
-      "+ ",
-      ""
-    )}</p></div>`;
+  if (data.message.includes("Joined") || data.message.includes("Connected")) {
+    const notifElm = `<div style='display:flex;justify-content:center;'><p style='display:inline-block;padding: 5px 8px; background: #ff39821a;color:#555;margin:10px auto;border-radius:10px;font-size:13px;font-weight:700'>${data.displayname} ${data.message}</p></div>`;
     messageContainer.insertAdjacentHTML("beforeend", notifElm);
     participantContainer.insertAdjacentHTML("beforeend", participantElem);
 
-    peerDisconnectToast(message.replace("+ ", ""), "");
+    peerDisconnectToast(`${data.displayname} ${data.message}`, "");
     return 1;
   }
   messageContainer.insertAdjacentHTML("beforeend", msgElm);
@@ -415,7 +434,10 @@ function gotMessageFromServer(message) {
   console.log(peerUuid);
 
   // Ignore messages that are not for us or from ourselves
-  if (peerUuid == localUuid || (signal.dest != localUuid && signal.dest != "all"))
+  if (
+    peerUuid == localUuid ||
+    (signal.dest != localUuid && signal.dest != "all")
+  )
     return;
 
   if (signal.displayName && signal.dest == "all") {
@@ -510,6 +532,7 @@ function createdDescription(description, peerUuid) {
     .catch(errorHandler);
 }
 let gEvent = [];
+
 function gotRemoteStream(event, peerUuid) {
   console.log("EVENT = " + event);
   gEvent.push(event);
@@ -543,7 +566,14 @@ function gotRemoteStream(event, peerUuid) {
     recorder.addStreams(event.streams[0]);
   }
 
-  appendMessage("+ " + peerConnections[peerUuid].displayName + " Connected");
+  appendMessage(false, {
+    message: "Joined",
+    room: roomID,
+    uuid: peerUuid,
+    displayname: peerConnections[peerUuid].displayName,
+    proPic: proPic,
+  });
+  // appendMessage("+ " + peerConnections[peerUuid].displayName + " Connected");
   let tmp = document.getElementById("remoteVideo_" + peerUuid);
 
   // console.log(`got remote stream, peer ${peerUuid}`);
@@ -564,6 +594,7 @@ function gotRemoteStream(event, peerUuid) {
 
   updateLayout();
 }
+
 function peerDisconnectToast(name, status) {
   toast = `<div
           class="toast align-items-center"
@@ -636,25 +667,12 @@ function errorHandler(error) {
 
 function createUUID() {
   function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
+    return Math.floor((1 + Math.random()) * 0x1000)
+      .toString(8)
       .substring(1);
   }
 
-  return (
-    s4() +
-    s4() +
-    "-" +
-    s4() +
-    "-" +
-    s4() +
-    "-" +
-    s4() +
-    "-" +
-    s4() +
-    s4() +
-    s4()
-  );
+  return s4();
 }
 
 // ! END WEBRTC Signalling ---------------------------------------------------------------
