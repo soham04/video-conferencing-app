@@ -1,367 +1,446 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fleet - 🔴 Conference</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.svg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fleet - 🔴 Conference</title>
-  <meta name="description" content="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.svg" />
-  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css" />
+    <!-- Place favicon.ico in the root directory -->
 
-  <!-- Place favicon.ico in the root directory -->
+    <!-- ======== CSS here ======== -->
+    <link rel=" stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/lineicons.css" />
+    <link rel="stylesheet" href="/css/animate.css" />
+    <link rel="stylesheet" href="/css/style.css" />
 
-  <!-- ======== CSS here ======== -->
-  <link rel=" stylesheet" href="/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/css/lineicons.css" />
-  <link rel="stylesheet" href="/css/animate.css" />
-  <link rel="stylesheet" href="/css/style.css" />
+    <!-- Soham -->
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script
+      src="https://cdn.socket.io/4.2.0/socket.io.min.js"
+      integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
 
-  <!-- Soham -->
-  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-  <script src="https://cdn.socket.io/4.2.0/socket.io.min.js"
-    integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj"
-    crossorigin="anonymous"></script>
-  <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-</head>
-
-<body class="camera-page-body">
-  <!-- Toast for copying the Conference info -->
-  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <div class="toast-container">
-      <div class="toast align-items-center" data-bs-delay="500" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex bg-dark text-white">
-          <div class="toast-body">Copied</div>
-          <button type="button" class="btn-close me-2 m-auto text-white" data-bs-dismiss="toast"
-            aria-label="Close"></button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Setting For Video, Mic and Speaker Selection -->
-  <div class="settingsOverlay"></div>
-  <div class="settings">
-    <div class="settings__close">
-      <i class="lni lni-close"></i>
-    </div>
-    <h1 class="settings__header">Device Settings</h1>
-    <div class="settings__body">
-      <div class="mb-3 settings__audio">
-        <label for="audioDevice" class="form-label">Microphone</label>
-        <select class="form-select" id="audioSource" aria-label="Default select example"></select>
-      </div>
-      <div class="mb-3 settings__speaker">
-        <label for="audioDevice" class="form-label">Speaker</label>
-        <select class="form-select" id="audioOutput" aria-label="Default select example"></select>
-      </div>
-      <div class="mb-3 settings__camera">
-        <label for="audioDevice" class="form-label">Camera</label>
-        <select class="form-select" id="videoSource" aria-label="Default select example"></select>
-      </div>
-    </div>
-    <div class="settings__bottom">
-      <button class="btn btn-danger">
-        <i class="lni lni-phone"></i>
-        End Meet
-      </button>
-    </div>
-  </div>
-  <!-- Pre Conference Window for name and Video and Audio on and off -->
-  <div class="stream">
-    <div class="stream__header">
-      <p>Choose your audio and video settings for</p>
-      <h1>Meeting Now</h1>
-    </div>
-    <div class="stream__body">
-      <video autoplay muted></video>
-      <audio autoplay></audio>
-      <div class="stream__overlay"></div>
-      <div class="stream__controls">
-        <div class="stream__name">
-          <input class="form-control" type="text" placeholder="Enter Name" />
-          <button class="btn btn-primary">Join Now</button>
-        </div>
-        <div class="stream__media">
-          <div class="stream__media-control">
-            <div class="icon">
-              <i class="lni lni-video"></i>
-            </div>
-            <input type="checkbox" name="" id="video-toggle" />
-            <label for="video-toggle">
-              <span class="span-btn active"> </span>
-            </label>
-          </div>
-          <div class="stream__media-control">
-            <div class="icon">
-              <i class="lni lni-mic"></i>
-            </div>
-            <input type="checkbox" name="" id="audio-toggle" />
-            <label for="audio-toggle">
-              <span class="span-btn active"> </span>
-            </label>
-          </div>
-          <div class="stream__media-custom mediaSettingsToggle">
-            <div class="icon">
-              <i class="lni lni-cog"></i>
-            </div>
-            <label for="custom-setup"> custom setup </label>
+  <body class="camera-page-body">
+    <!-- Toast for copying the Conference info -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <div class="toast-container">
+        <div
+          class="toast align-items-center"
+          data-bs-delay="500"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div class="d-flex bg-dark text-white">
+            <div class="toast-body">Copied</div>
+            <button
+              type="button"
+              class="btn-close me-2 m-auto text-white"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Conference Starts Here -->
-  <div class="conference active">
-    <div class="conference-container">
-      <div class="conference-col-2">
-        <div class="conference__navigation">
-          <div class="conference__navigation--logo">
-            <img src="/img/logo/logo-color-square.svg" alt="" />
-          </div>
-          <ul class="conference__navigation--nav">
-            <li class="conference__navigation--nav-item">
-              <a class="conference__navigation--nav-link conferenceInfoBtn">
-                <i class="fi fi-rr-comment-info"></i>
-              </a>
-            </li>
-            <li class="conference__navigation--nav-item">
-              <a class="conference__navigation--nav-link conferenceChatBtn">
-                <i class="fi fi-rr-comment"></i>
-              </a>
-            </li>
-            <li class="conference__navigation--nav-item">
-              <a class="conference__navigation--nav-link active">
-                <i class="fi fi-rr-video-camera"></i>
-              </a>
-            </li>
-            <li class="conference__navigation--nav-item">
-              <a class="
-                    conference__navigation--nav-link
-                    conferenceParticipantBtn
-                  ">
-                <i class="fi fi-rr-user"></i>
-              </a>
-            </li>
-            <li class="conference__navigation--nav-item">
-              <a class="conference__navigation--nav-link focusIn" id="conferenceFocusBtn">
-                <i class="fi fi-rr-mode-portrait"></i>
-              </a>
-            </li>
-          </ul>
+
+    <!-- Setting For Video, Mic and Speaker Selection -->
+    <div class="settingsOverlay"></div>
+    <div class="settings">
+      <div class="settings__close">
+        <i class="lni lni-close"></i>
+      </div>
+      <h1 class="settings__header">Device Settings</h1>
+      <div class="settings__body">
+        <div class="mb-3 settings__audio">
+          <label for="audioDevice" class="form-label">Microphone</label>
+          <select
+            class="form-select"
+            id="audioSource"
+            aria-label="Default select example"
+          ></select>
         </div>
-        <div class="conference__window">
-          <div class="conference__heading expand">
-            <button class="conference__heading--toggle btn btn-light" disabled>
-              <i class="fi fi-rr-angle-up"></i>
-            </button>
-            <h2 class="conference__heading--title">
-              UI/UX Design weekly update
-            </h2>
-            <div class="conference__heading--tag">
-              <i class="lni lni-slideshare"></i> Design Team
-            </div>
-            <div class="conference__heading--user conferenceInfoBtn">
-              <div class="conference__heading--user-img">
-                <img src="<%= image %>" alt="" />
-                <script>
-                  var proPic = "<%= image %>";  //var test is now assigned to getTest which will only work on browsers
-                </script>
-              </div>
-              <p class="conference__heading--user-name">
-                <%= user %> <i class="fi fi-rr-angle-down"></i>
-              </p>
-            </div>
+        <div class="mb-3 settings__speaker">
+          <label for="audioDevice" class="form-label">Speaker</label>
+          <select
+            class="form-select"
+            id="audioOutput"
+            aria-label="Default select example"
+          ></select>
+        </div>
+        <div class="mb-3 settings__camera">
+          <label for="audioDevice" class="form-label">Camera</label>
+          <select
+            class="form-select"
+            id="videoSource"
+            aria-label="Default select example"
+          ></select>
+        </div>
+      </div>
+      <div class="settings__bottom">
+        <button class="btn btn-danger">
+          <i class="lni lni-phone"></i>
+          End Meet
+        </button>
+      </div>
+    </div>
+    <!-- Pre Conference Window for name and Video and Audio on and off -->
+    <div class="stream">
+      <div class="stream__header">
+        <p>Choose your audio and video settings for</p>
+        <h1>Meeting Now</h1>
+      </div>
+      <div class="stream__body">
+        <video autoplay muted></video>
+        <audio autoplay></audio>
+        <div class="stream__overlay"></div>
+        <div class="stream__controls">
+          <div class="stream__name">
+            <input class="form-control" type="text" placeholder="Enter Name" />
+            <button class="btn btn-primary">Join Now</button>
           </div>
-          <div class="conference__cameras">
-            <div class="conference__cameras--layout layout-4" id="videos">
-              <div class="custom-col" id="localVideoContainer">
-                <video autoplay muted loop controls id="localVideo">
-                  <source src="/video/Skyscrapers - 80724.mp4" type="" />
-                </video>
-              </div>
-            </div>
-            <div class="conference__cameras--controls">
-              <div class="conference__cameras--controls-video" id="toggle-video-stream">
+          <div class="stream__media">
+            <div class="stream__media-control">
+              <div class="icon">
                 <i class="lni lni-video"></i>
               </div>
-              <div class="conference__cameras--controls-mic" id="toggle-mic-stream">
+              <input type="checkbox" name="" id="video-toggle" />
+              <label for="video-toggle">
+                <span class="span-btn active"> </span>
+              </label>
+            </div>
+            <div class="stream__media-control">
+              <div class="icon">
                 <i class="lni lni-mic"></i>
               </div>
-              <div class="conference__cameras--controls-end">
-                <i class="lni lni-phone"></i>
+              <input type="checkbox" name="" id="audio-toggle" />
+              <label for="audio-toggle">
+                <span class="span-btn active"> </span>
+              </label>
+            </div>
+            <div class="stream__media-custom mediaSettingsToggle">
+              <div class="icon">
+                <i class="lni lni-cog"></i>
               </div>
-              <div class="conference__cameras--controls-focus" id="conferenceFullScreenBtn">
-                <i class="fi fi-rr-expand"></i>
+              <label for="custom-setup"> custom setup </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Conference Starts Here -->
+    <div class="conference active">
+      <div class="conference-container">
+        <div class="conference-col-2">
+          <div class="conference__navigation">
+            <div class="conference__navigation--logo">
+              <img src="/img/logo/logo-color-square.svg" alt="" />
+            </div>
+            <ul class="conference__navigation--nav">
+              <li class="conference__navigation--nav-item">
+                <a class="conference__navigation--nav-link conferenceInfoBtn">
+                  <i class="fi fi-rr-comment-info"></i>
+                </a>
+              </li>
+              <li class="conference__navigation--nav-item">
+                <a class="conference__navigation--nav-link conferenceChatBtn">
+                  <i class="fi fi-rr-comment"></i>
+                </a>
+              </li>
+              <li class="conference__navigation--nav-item">
+                <a class="conference__navigation--nav-link active">
+                  <i class="fi fi-rr-video-camera"></i>
+                </a>
+              </li>
+              <li class="conference__navigation--nav-item">
+                <a
+                  class="
+                    conference__navigation--nav-link
+                    conferenceParticipantBtn
+                  "
+                >
+                  <i class="fi fi-rr-user"></i>
+                </a>
+              </li>
+              <li class="conference__navigation--nav-item">
+                <a
+                  class="conference__navigation--nav-link focusIn"
+                  id="conferenceFocusBtn"
+                >
+                  <i class="fi fi-rr-mode-portrait"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="conference__window">
+            <div class="conference__heading expand">
+              <button
+                class="conference__heading--toggle btn btn-light"
+                disabled
+              >
+                <i class="fi fi-rr-angle-up"></i>
+              </button>
+              <h2 class="conference__heading--title">
+                UI/UX Design weekly update
+              </h2>
+              <div class="conference__heading--tag">
+                <i class="lni lni-slideshare"></i> Design Team
               </div>
-              <div class="dropdown conference__cameras--controls-settings">
-                <div class="" id="conferenceControls" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="lni lni-more"></i>
+              <div class="conference__heading--user conferenceInfoBtn">
+                <div class="conference__heading--user-img">
+                  <img src="<%= image %>" alt="" />
+                  <script>
+                    var proPic = "<%= image %>"; //var test is now assigned to getTest which will only work on browsers
+                  </script>
                 </div>
-                <ul class="dropdown-menu" aria-labelledby="conferenceControls">
-                  <li>
-                    <div class="
+                <p class="conference__heading--user-name">
+                  <%= user %> <i class="fi fi-rr-angle-down"></i>
+                </p>
+              </div>
+            </div>
+            <div class="conference__cameras">
+              <div class="conference__cameras--layout layout-4" id="videos">
+                <div class="custom-col" id="localVideoContainer">
+                  <video autoplay muted loop id="localVideo">
+                    <source src="/video/Skyscrapers - 80724.mp4" type="" />
+                  </video>
+                </div>
+              </div>
+              <div class="conference__cameras--controls">
+                <div
+                  class="conference__cameras--controls-video"
+                  id="toggle-video-stream"
+                >
+                  <i class="lni lni-video"></i>
+                </div>
+                <div
+                  class="conference__cameras--controls-mic"
+                  id="toggle-mic-stream"
+                >
+                  <i class="lni lni-mic"></i>
+                </div>
+                <div class="conference__cameras--controls-end">
+                  <i class="lni lni-phone"></i>
+                </div>
+                <div
+                  class="conference__cameras--controls-focus"
+                  id="conferenceFullScreenBtn"
+                >
+                  <i class="fi fi-rr-expand"></i>
+                </div>
+                <div class="dropdown conference__cameras--controls-settings">
+                  <div
+                    class=""
+                    id="conferenceControls"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <i class="lni lni-more"></i>
+                  </div>
+                  <ul
+                    class="dropdown-menu"
+                    aria-labelledby="conferenceControls"
+                  >
+                    <li>
+                      <div
+                        class="
                           dropdown-item
                           conference__cameras--controls-settings
                           mediaSettingsToggle
-                        ">
-                      <i class="lni lni-cog"></i> Device Settings
-                    </div>
-                  </li>
-                  <li>
-                    <div class="
+                        "
+                      >
+                        <i class="lni lni-cog"></i> Device Settings
+                      </div>
+                    </li>
+                    <li>
+                      <div
+                        class="
+                          dropdown-item
+                          conference__cameras--controls-settings
+                          mediaSettingsToggle
+                        "
+                        id="screen-share-button"
+                        data-toggle="off"
+                      >
+                        <i class="lni lni-cog"></i> Screen Share
+                      </div>
+                    </li>
+                    <li>
+                      <div
+                        class="
                           dropdown-item
                           conference__cameras--controls-whiteboard
-                        ">
-                      <i class="lni lni-blackboard"></i> WhiteBoard
-                    </div>
-                  </li>
-                  <li>
-                    <div class="
+                        "
+                      >
+                        <i class="lni lni-blackboard"></i> WhiteBoard
+                      </div>
+                    </li>
+                    <li>
+                      <div
+                        class="
                           dropdown-item
                           conference__cameras--controls-record
-                        ">
-                      <i class="lni lni-play"></i> Screen Record
-                    </div>
-                  </li>
-                  <li>
-                    <div class="
+                        "
+                      >
+                        <i class="lni lni-play"></i> Screen Record
+                      </div>
+                    </li>
+                    <li>
+                      <div
+                        class="
                           dropdown-item
                           conference__cameras--controls-speaker
-                        ">
-                      <i class="lni lni-volume-medium"></i> Speaker
-                    </div>
-                  </li>
-                </ul>
+                        "
+                      >
+                        <i class="lni lni-volume-medium"></i> Speaker
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="videos" style="display: none">
-            <div class="videoContainer">
-              <video id="recording" autoplay></video>
+            <div class="videos" style="display: none">
+              <div class="videoContainer">
+                <video id="recording" autoplay></video>
+              </div>
+            </div>
+            <canvas class="whiteboard" style="display: none"></canvas>
+
+            <div class="colors" style="display: none">
+              <div class="color black"></div>
+              <div class="color red"></div>
+              <div class="color green"></div>
+              <div class="color blue"></div>
+              <div class="color yellow"></div>
+            </div>
+            <div>
+              <button id="">PAUSE 📸</button>
+              <button id="">RESUME ⏯</button>
+              <button id="record-button">RECORD🔴</button>
+              <button id="stop-record-button">STOP RECORD🟥</button>
+              <button id="screen-share-button">SCREEN SHARE📺</button>
             </div>
           </div>
-          <canvas class="whiteboard" style="display: none"></canvas>
-
-          <div class="colors" style="display: none">
-            <div class="color black"></div>
-            <div class="color red"></div>
-            <div class="color green"></div>
-            <div class="color blue"></div>
-            <div class="color yellow"></div>
-          </div>
-          <div>
-            <button id="">PAUSE 📸</button>
-            <button id="">RESUME ⏯</button>
-            <button id="record-button">RECORD🔴</button>
-            <button id="stop-record-button">STOP RECORD🟥</button>
-            <button id="screen-share-button">SCREEN SHARE📺</button>
-          </div>
         </div>
-      </div>
-      <div class="conference-col-1 expand">
-        <div class="conference-rside">
-          <h4 class="conference-rside-name">Group Chat</h4>
-          <div class="conference-rside-buttons">
-            <button class="
+        <div class="conference-col-1 expand">
+          <div class="conference-rside">
+            <h4 class="conference-rside-name">Group Chat</h4>
+            <div class="conference-rside-buttons">
+              <button
+                class="
                   btn
                   custom-btn-primary
                   btn-sm
                   chatBtnRsd
                   conferenceChatBtn
-                ">
-              Messages
-            </button>
-            <button class="
+                "
+              >
+                Messages
+              </button>
+              <button
+                class="
                   btn btn-light btn-sm
                   participantBtnRsd
                   conferenceParticipantBtn
-                ">
-              Participants
-            </button>
-          </div>
-        </div>
-        <div class="conference__chat active" id="message-container">
-          <div class="conference__chat--items">
-            <div class="conference__chat--item">
-              <div class="conference__chat--item-icon">
-                <img src="/img/meet/user-1.jpg" alt="" />
-              </div>
-              <div class="conference__chat--item-message">
-                Hey everyone, let's start the call now
-              </div>
-              <div class="conference__chat--item-detail">10:00 am, Alexa</div>
-            </div>
-            <div class="conference__chat--item conference__chat--item-user">
-              <div class="conference__chat--item-icon">
-                <img src="/img/meet/user-5.jpg" alt="" />
-              </div>
-              <div class="conference__chat--item-message">
-                I am calling for oyher people to join, just a littile wait and
-                we'll be in the meet.
-              </div>
-              <div class="conference__chat--item-detail">10:00 am, Lousi</div>
+                "
+              >
+                Participants
+              </button>
             </div>
           </div>
-          <div class="conference__chat--box" id="send-container">
-            <input type="text" placeholder="Type message" id="message-input"
-              class="form-control conference__chat--box-input" />
-            <button class="btn conference__chat--box-send" id="send-button">
-              <i class="fi fi-rr-paper-plane"></i>
-            </button>
-          </div>
-        </div>
-        <div class="conference__info">
-          <h4 class="conference__info-title">Your meeting's ready</h4>
-          <button class="btn custom-btn-primary conference__info-adduser">
-            <i class="lni lni-user"></i>Add others
-          </button>
-          <div class="conference__info-announcement">
-            or share the meet link with other that you want in the meet
-          </div>
-          <div class="conference__info-join_code">
-            <div type="text" class="form-control" id="codeMeetJoin">
-              meet.fleet.com/<%= roomid %>
+          <div class="conference__chat active" id="message-container">
+            <div class="conference__chat--items">
+              <div class="conference__chat--item">
+                <div class="conference__chat--item-icon">
+                  <img src="/img/meet/user-1.jpg" alt="" />
+                </div>
+                <div class="conference__chat--item-message">
+                  Hey everyone, let's start the call now
+                </div>
+                <div class="conference__chat--item-detail">10:00 am, Alexa</div>
+              </div>
+              <div class="conference__chat--item conference__chat--item-user">
+                <div class="conference__chat--item-icon">
+                  <img src="/img/meet/user-5.jpg" alt="" />
+                </div>
+                <div class="conference__chat--item-message">
+                  I am calling for oyher people to join, just a littile wait and
+                  we'll be in the meet.
+                </div>
+                <div class="conference__chat--item-detail">10:00 am, Lousi</div>
+              </div>
             </div>
-            <button class="custom-btn-google" id="meetInfoCopyBtn">
-              <i class="lni lni-empty-file"></i>
+            <div class="conference__chat--box" id="send-container">
+              <input
+                type="text"
+                placeholder="Type message"
+                id="message-input"
+                class="form-control conference__chat--box-input"
+              />
+              <button class="btn conference__chat--box-send" id="send-button">
+                <i class="fi fi-rr-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+          <div class="conference__info">
+            <h4 class="conference__info-title">Your meeting's ready</h4>
+            <button class="btn custom-btn-primary conference__info-adduser">
+              <i class="lni lni-user"></i>Add others
             </button>
-          </div>
-          <div class="conference__info-notice">
-            <i class="lni lni-lock-alt"></i>
-            People who join the meet must get your permission before they can
-            join.
-          </div>
-          <div class="conference__info-joinedas">
-            Joined as <span>
-              <%= mail %>
-            </span>
-          </div>
-        </div>
-        <div class="conference__participants">
-          <p class="conference__participants--title">In Call</p>
-          <div class="conference__participants--items">
-            <div class="conference__participants--item">
-              <div class="conference__participants--item-img">
-                <img src="/img/meet/user-1.jpg" alt="" />
+            <div class="conference__info-announcement">
+              or share the meet link with other that you want in the meet
+            </div>
+            <div class="conference__info-join_code">
+              <div type="text" class="form-control" id="codeMeetJoin">
+                meet.fleet.com/<%= roomid %>
               </div>
-              <div class="conference__participants--item-desc">
-                <div class="conference__participants--item-name">
-                  Archana Singh
+              <button class="custom-btn-google" id="meetInfoCopyBtn">
+                <i class="lni lni-empty-file"></i>
+              </button>
+            </div>
+            <div class="conference__info-notice">
+              <i class="lni lni-lock-alt"></i>
+              People who join the meet must get your permission before they can
+              join.
+            </div>
+            <div class="conference__info-joinedas">
+              Joined as <span> <%= mail %> </span>
+            </div>
+          </div>
+          <div class="conference__participants">
+            <p class="conference__participants--title">In Call</p>
+            <div class="conference__participants--items">
+              <div class="conference__participants--item">
+                <div class="conference__participants--item-img">
+                  <img src="/img/meet/user-1.jpg" alt="" />
                 </div>
-                <div class="conference__participants--item-subname">
-                  Meeting Host
+                <div class="conference__participants--item-desc">
+                  <div class="conference__participants--item-name">
+                    Archana Singh
+                  </div>
+                  <div class="conference__participants--item-subname">
+                    Meeting Host
+                  </div>
                 </div>
-              </div>
-              <div class="conference__participants--item-controls">
-                <div class="conference__participants--item-mute">
-                  <i class="lni lni-mic"></i>
-                </div>
-                <div class="conference__participants--item-pin">
-                  <i class="lni lni-pin"></i>
+                <div class="conference__participants--item-controls">
+                  <div class="conference__participants--item-mute">
+                    <i class="lni lni-mic"></i>
+                  </div>
+                  <div class="conference__participants--item-pin">
+                    <i class="lni lni-pin"></i>
+                  </div>
                 </div>
               </div>
             </div>
@@ -369,26 +448,28 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ======== JS here ======== -->
-  <script src="/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/wow.min.js"></script>
-  <script src="/js/camera.js"></script>
-  <script src="/js/deviceToggle.js"></script>
+    <!-- ======== JS here ======== -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/wow.min.js"></script>
+    <script src="/js/camera.js"></script>
+    <script src="/js/deviceToggle.js"></script>
 
-  <!-- Soham -->
+    <!-- Soham -->
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/webrtc.js"></script>
-  <!-- <script src="/js/screen.js"></script> -->
-  <script>
-    localDisplayName = "<%= user %>";
-    roomID = "<%= roomid %>";
-  </script>
-  <script type="text/javascript">
-    start();
-  </script>
-</body>
-
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/webrtc.js"></script>
+    <!-- <script src="/js/screen.js"></script> -->
+    <script>
+      localDisplayName = "<%= user %>";
+      roomID = "<%= roomid %>";
+    </script>
+    <script type="text/javascript">
+      start();
+    </script>
+    <script
+      src="https://kit.fontawesome.com/b8e3505483.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

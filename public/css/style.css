@@ -82,6 +82,19 @@ body {
   line-height: 1;
 }
 
+@keyframes customFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.customFadeIn {
+  animation: customFadeIn 0.6s ease backwards;
+}
+
 .stream {
   background: #0d0022;
   color: #fff;
@@ -437,10 +450,11 @@ body {
   height: 100%;
   overflow: hidden;
   background: #fff;
-  padding: 10px 0;
+  padding: 10px;
   position: relative;
 }
 .conference__cameras--layout {
+  position: relative;
   height: 100%;
   width: 100%;
   display: flex;
@@ -453,6 +467,7 @@ body {
 .conference__cameras--layout .custom-col {
   padding: 5px;
   position: relative;
+  transition: all 0.5s;
 }
 .conference__cameras--layout .custom-col:not(:last-child) {
   flex-grow: 1;
@@ -464,6 +479,64 @@ body {
   width: 100%;
   height: 100%;
 }
+.conference__cameras--layout .custom-col .conferenceVideoLabel {
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+  color: #fff;
+  padding: 3px 10px;
+  background: radial-gradient(#00000080, #00000000);
+  opacity: 0.4;
+  transition: all 0.3s;
+}
+.conference__cameras--layout .custom-col:hover > .conferenceVideoLabel {
+  opacity: 1;
+  background: radial-gradient(#000000, #00000000);
+}
+.conference__cameras--layout .custom-col .videoPinBtn {
+  position: absolute;
+  padding: 0;
+  top: 15px;
+  right: 20px;
+  color: #fff;
+  background: #000;
+  font-size: 14px;
+  opacity: 0;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.conference__cameras--layout .custom-col .videoPinBtn i {
+  transform: rotate(45deg);
+}
+.conference__cameras--layout .custom-col:hover > .videoPinBtn {
+  opacity: 1;
+}
+.conference__cameras--layout .custom-col.unpinned {
+  position: absolute;
+  left: 0px;
+  top: 20px;
+  width: 120px;
+  height: 120px;
+  background: #000000;
+  border-radius: 10px;
+  padding: 5px;
+  z-index: 2;
+}
+.conference__cameras--layout .custom-col.unpinned .conferenceVideoLabel {
+  font-size: 10px;
+}
+.conference__cameras--layout .custom-col.pinned {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: calc(100% - 120px);
+  height: 100%;
+}
 .conference__cameras--layout.layout-4 .custom-col {
   flex-basis: 50%;
 }
@@ -472,14 +545,11 @@ body {
   flex-grow: 0;
   height: 33%;
 }
-.conference__cameras--layout .custom-col .conferenceVideoLabel{
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-}
 .conference__cameras--layout video {
   width: 100%;
   height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
 }
 .conference__cameras--controls {
   position: absolute;
@@ -619,6 +689,20 @@ body {
 .conference__chat--item-user .conference__chat--item-detail {
   right: unset;
   left: 15px;
+}
+.conference__chat--notification {
+  display: flex;
+  justify-content: center;
+}
+.conference__chat--notification p {
+  display: inline-block;
+  padding: 5px 8px;
+  background: #ff39821a;
+  color: #555;
+  margin: 10px auto;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
 }
 .conference__chat--box {
   display: flex;

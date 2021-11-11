@@ -181,7 +181,42 @@ const addFocusOnCamLayuot = () => {
   }
 };
 
-// * 6.Function to make Web App on Full Screen
+// * 6.Function to pin a video minimizing others
+function pinVideo() {
+  const pinBtns = document.querySelectorAll(".videoPinBtn");
+  const customCols = document.querySelectorAll(".custom-col");
+  pinBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      console.log(btn);
+      if (btn.closest(".custom-col").classList.contains("pinned")) {
+        customCols.forEach((col) => {
+          col.style.top = "0";
+          col.classList.remove("pinned");
+          col.classList.remove("unpinned");
+          btn
+            .closest(".conference__cameras--layout")
+            .classList.remove("customFadeIn");
+        });
+      } else {
+        customCols.forEach((col) => {
+          col.style.top = "0";
+          col.classList.remove("pinned");
+          col.classList.add("unpinned");
+          btn.closest(".custom-col").classList.remove("unpinned");
+          btn.closest(".custom-col").classList.add("pinned");
+          btn
+            .closest(".conference__cameras--layout")
+            .classList.add("customFadeIn");
+        });
+        document.querySelectorAll(".unpinned").forEach((unpin, i) => {
+          unpin.style.top = 125 * i + "px";
+        });
+      }
+    });
+  });
+}
+
+// * 7.Function to make Web App on Full Screen
 function openFullscreen() {
   const elem = document.documentElement;
   if (elem.requestFullscreen) {
@@ -195,7 +230,7 @@ function openFullscreen() {
   }
 }
 
-// * 7.Function to close Web App on Full Screen
+// * 8.Function to close Web App on Full Screen
 function closeFullscreen() {
   if (document.exitFullscreen) {
     document.exitFullscreen();

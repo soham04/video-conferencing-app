@@ -89,7 +89,9 @@ function start() {
   document
     .getElementById("localVideoContainer")
     .appendChild(makeLabel(localDisplayName));
-
+  document
+    .getElementById("localVideoContainer")
+    .insertAdjacentHTML("beforeend", makePinBtn());
   // specify  audio for user media
   var constraints = {
     video: {
@@ -196,16 +198,24 @@ function start() {
           recorder = new MultiStreamRecorder(streams, recordRTCOptions);
           recorder.record();
         });
-
         screenShareButton.addEventListener("click", (e) => {
-          console.log("adding screen stream");
-          e.preventDefault();
-          // videoChanger
-
-          if (navigator.mediaDevices.getDisplayMedia) {
-            navigator.mediaDevices.getDisplayMedia().then((stream) => {
-              videoChanger.replaceTrack(stream.getVideoTracks()[0]);
-            });
+          if (screenShareButton.getAttribute("data-toggle") == "on") {
+            if (navigator.mediaDevices.getUserMedia) {
+              navigator.mediaDevices
+                .getUserMedia(constraints)
+                .then((stream) => {
+                  videoChanger.replaceTrack(stream.getVideoTracks()[0]);
+                });
+            }
+          } else {
+            console.log("adding screen stream");
+            e.preventDefault();
+            if (navigator.mediaDevices.getDisplayMedia) {
+              navigator.mediaDevices.getDisplayMedia().then((stream) => {
+                videoChanger.replaceTrack(stream.getVideoTracks()[0]);
+              });
+            }
+            screenShareButton.setAttribute("data-toggle", "on");
           }
 
           // Code to again adding the local stream
@@ -274,7 +284,6 @@ function start() {
 }
 
 // ! Messenger -------------------------------------------------------
-let x = "";
 
 function appendMessage(owner, data) {
   console.log(data);
@@ -314,7 +323,9 @@ function appendMessage(owner, data) {
               </div>`;
 
   if (data.message.includes("Joined") || data.message.includes("Connected")) {
-    const notifElm = `<div style='display:flex;justify-content:center;'><p style='display:inline-block;padding: 5px 8px; background: #ff39821a;color:#555;margin:10px auto;border-radius:10px;font-size:13px;font-weight:700'>${data.displayname} ${data.message}</p></div>`;
+    const notifElm = `<div class="conference__chat--notification">
+                <p>${data.displayname} ${data.message}</p>
+              </div>`;
     messageContainer.insertAdjacentHTML("beforeend", notifElm);
     participantContainer.insertAdjacentHTML("beforeend", participantElem);
 
@@ -538,6 +549,18 @@ function gotRemoteStream(event, peerUuid) {
   gEvent.push(event);
 
   if (event.track.kind == "audio") {
+    /* id = "remoteVideo_" + peerUuid;
+     console.log("hi:", id);
+     let vidContainer = `<div class="custom-col">
+                  <audio autoplay src="${event.streams[0]}"></audio>
+                  <video autoplay muted loop id="localVideo ${id}">
+                    <source src="/video/Skyscrapers - 80724.mp4" type="" />
+                  </video>
+                  <div class="conferenceVideoLabel">${peerConnections[peerUuid].displayName}</div>
+                  <button class="btn videoPinBtn">
+                    <i class="fas fa-thumbtack"></i>
+                  </button>
+                  </div>`; */
     var sound = document.createElement("audio");
 
     sound.setAttribute("autoplay", "");
@@ -547,11 +570,20 @@ function gotRemoteStream(event, peerUuid) {
     vidContainer.setAttribute("id", "remoteVideo_" + peerUuid);
     vidContainer.classList.add("custom-col");
     vidContainer.appendChild(sound);
-    vidContainer.appendChild(makeLabel(peerConnections[peerUuid].displayName));
+    vidContainer.insertAdjacentHTML("beforeend", makePinBtn());
+    // let el = 0;
+    // el = document
+    //   .querySelectorAll(".custom-col")
+    //   .filter((col) => col.classList.contains("pinned"));
+    // if (el != 0) {
+    //   console.log(el);
+    //   // vidContainer.classList.add("unpinned");
+    // }
 
     document.getElementById("videos").appendChild(vidContainer);
 
     updateLayout();
+    pinVideo();
 
     return;
   }
@@ -661,18 +693,36 @@ function makeLabel(label) {
   return vidLabel;
 }
 
+function makePinBtn() {
+  var btn = `<button class="btn videoPinBtn"><i class="fas fa-thumbtack"></i></button>`;
+  return btn;
+}
+
 function errorHandler(error) {
   console.log("Error ------------------------------------------\n" + error);
 }
 
 function createUUID() {
   function s4() {
-    return Math.floor((1 + Math.random()) * 0x1000)
-      .toString(8)
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
       .substring(1);
   }
 
-  return s4();
+  return (
+    s4() +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    s4() +
+    s4()
+  );
 }
 
 // ! END WEBRTC Signalling ---------------------------------------------------------------
