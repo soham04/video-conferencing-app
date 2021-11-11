@@ -17,6 +17,7 @@ var stopRecordButton;
 let recordingStream;
 let screenShareButton;
 let videoChanger;
+let tmpNewStream;
 
 // White Board vairable ----------------------------------
 
@@ -202,24 +203,35 @@ function start() {
 
         screenShareButton.addEventListener("click", (e) => {
           if (screenShareButton.getAttribute("data-toggle") == "on") {
+
+            // Toggle camera
+
             console.log("off screen share");
             if (navigator.mediaDevices.getUserMedia) {
               navigator.mediaDevices
                 .getUserMedia(constraints)
                 .then((stream) => {
                   videoChanger.replaceTrack(stream.getVideoTracks()[0]);
+                  tmpNewStream = new MediaStream()
+                  tmpNewStream.addTrack(stream.getVideoTracks()[0])
+                  document.getElementById("localVideo").srcObject = tmpNewStream
                 });
             }
-            
+
             screenShareButton.setAttribute("data-toggle", "off");
             // screenShareButton.getAttribute("data-toggle") = "off"
           } else {
+
+            // Toggle screenshare
 
             console.log("adding screen stream");
             e.preventDefault();
             if (navigator.mediaDevices.getDisplayMedia) {
               navigator.mediaDevices.getDisplayMedia().then((stream) => {
                 videoChanger.replaceTrack(stream.getVideoTracks()[0]);
+                tmpNewStream = new MediaStream()
+                tmpNewStream.addTrack(stream.getVideoTracks()[0])
+                document.getElementById("localVideo").srcObject = tmpNewStream
               });
             }
             screenShareButton.setAttribute("data-toggle", "on");
@@ -242,7 +254,16 @@ function start() {
           console.log("REcording to be stoped");
 
           recorder.stop(function (blob) {
-            recordingStream.src = URL.createObjectURL(blob);
+
+            // recordingStream.src = URL.createObjectURL(blob);
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            a.href = url;
+            a.download = "recording.webm";
+            a.click();
+            window.URL.revokeObjectURL(url);
           });
         });
 
