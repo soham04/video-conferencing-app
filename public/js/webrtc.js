@@ -198,8 +198,11 @@ function start() {
           recorder = new MultiStreamRecorder(streams, recordRTCOptions);
           recorder.record();
         });
+
+
         screenShareButton.addEventListener("click", (e) => {
           if (screenShareButton.getAttribute("data-toggle") == "on") {
+            console.log("off screen share");
             if (navigator.mediaDevices.getUserMedia) {
               navigator.mediaDevices
                 .getUserMedia(constraints)
@@ -207,7 +210,11 @@ function start() {
                   videoChanger.replaceTrack(stream.getVideoTracks()[0]);
                 });
             }
+            
+            screenShareButton.setAttribute("data-toggle", "off");
+            // screenShareButton.getAttribute("data-toggle") = "off"
           } else {
+
             console.log("adding screen stream");
             e.preventDefault();
             if (navigator.mediaDevices.getDisplayMedia) {
@@ -287,18 +294,16 @@ function start() {
 
 function appendMessage(owner, data) {
   console.log(data);
-  const msgElm = `<div class='conference__chat--item ${
-    owner ? "conference__chat--item-user" : ""
-  }'>
+  const msgElm = `<div class='conference__chat--item ${owner ? "conference__chat--item-user" : ""
+    }'>
                 <div class="conference__chat--item-icon">
                   <img src="${data.proPic}" alt="" />
                 </div>
                 <div class="conference__chat--item-message">
                   ${data.message}
                 </div>
-                <div class="conference__chat--item-detail">10:00 am, ${
-                  data.displayname
-                }</div>
+                <div class="conference__chat--item-detail">10:00 am, ${data.displayname
+    }</div>
               </div>`;
   const participantElem = ` <div class="conference__participants--item">
                 <div class="conference__participants--item-img">
