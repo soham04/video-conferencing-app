@@ -225,12 +225,7 @@
                 >
                   <i class="lni lni-video"></i>
                 </div>
-                <div
-                  class="conference__cameras--controls-mic"
-                  id="toggle-mic-stream"
-                >
-                  <i class="lni lni-mic"></i>
-                </div>
+
                 <div class="conference__cameras--controls-end">
                   <i class="lni lni-phone"></i>
                 </div>
@@ -268,13 +263,13 @@
                       <div
                         class="
                           dropdown-item
-                          conference__cameras--controls-settings
+                          conference__cameras--controls-screenshare
                           mediaSettingsToggle
                         "
                         id="screen-share-button"
                         data-toggle="off"
                       >
-                        <i class="lni lni-cog"></i> Screen Share
+                        <i class="lni lni-laptop-phone"></i> Screen Share
                       </div>
                     </li>
                     <li>
@@ -287,7 +282,7 @@
                         <i class="lni lni-blackboard"></i> WhiteBoard
                       </div>
                     </li>
-                    <li>
+                    <!-- <li>
                       <div
                         class="
                           dropdown-item
@@ -306,7 +301,7 @@
                       >
                         <i class="lni lni-volume-medium"></i> Speaker
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -325,13 +320,13 @@
               <div class="color blue"></div>
               <div class="color yellow"></div>
             </div>
-            <div>
+            <!-- <div style="display: none">
               <button id="">PAUSE 📸</button>
               <button id="">RESUME ⏯</button>
               <button id="record-button">RECORD🔴</button>
               <button id="stop-record-button">STOP RECORD🟥</button>
               <button id="screen-share-button">SCREEN SHARE📺</button>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="conference-col-1 expand">
@@ -471,5 +466,12 @@
       src="https://kit.fontawesome.com/b8e3505483.js"
       crossorigin="anonymous"
     ></script>
+    <script>
+      // let title = localStorage["objectToPass"];
+      // alert(localStorage);
+      // alert(title);
+      // localStorage.removeItem("objectToPass"); // Clear the localStorage
+      // document.querySelector(".conference__heading--title").textContent = title;
+    </script>
   </body>
 </html>

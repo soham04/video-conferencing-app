@@ -694,7 +694,9 @@ function checkPeerDisconnect(event, peerUuid) {
     updateLayout();
     peerDisconnectToast(name, "disconnected");
 
-    const notifElm = `<div style='display:flex;justify-content:center;'><p style='display:inline-block;padding: 5px 8px; background: #ff39821a;color:#555;margin:10px auto;border-radius:10px;font-size:13px;font-weight:700'>${name} disconnected</p></div>`;
+    const notifElm = `<div class="conference__chat--notification">
+                <p>${name} disconnected</p>
+              </div>`;
     messageContainer.insertAdjacentHTML("beforeend", notifElm);
   }
 }

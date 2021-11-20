@@ -180,36 +180,53 @@
         </nav>
         <div class="dashboard__meetings">
           <ul>
-            <li>
+            <% for(var i=0; i < room_hist.length; i++) { var date =
+            room_hist[i].time; %>
+            <li class="meetHistoryItems" data-number="<%= i %>">
               <div class="dashboard__meetings--logo">
                 <i class="lni lni-slideshare"></i>
               </div>
-              <p>Design Convos</p>
-              <span>20 Dec, 2020</span>
+              <p><%= room_hist[i].room_id %></p>
+              <span
+                ><%= date.getDate() + ' ' + date.toLocaleString('default', {
+                month: 'long' }) + ', ' + date.getFullYear() %></span
+              >
             </li>
+            <% } %>
           </ul>
         </div>
-        <div class="conference__chat active">
+        <div class="conference__chat active" style="flex: 1">
           <div class="conference__chat--items">
-            <div class="conference__chat--item">
-              <div class="conference__chat--item-icon">
-                <img src="./assets/img/meet/user-1.jpg" alt="" />
-              </div>
-              <div class="conference__chat--item-message">
-                Hey everyone, let's start the call now
-              </div>
-              <div class="conference__chat--item-detail">10:00 am, Alexa</div>
+            <!-- <span class='room_hist'><%= room_hist %></span> -->
+            <% for(var i=0; i < room_hist[room_hist.length-1].chats.length;
+            i++){
+            <!-- Variables -->
+            var userClass = 'conference__chat--item'; 
+            var chat = room_hist[room_hist.length-1].chats[i].message; 
+            var date = room_hist[room_hist.length-1].chats[i].time; 
+            var name = room_hist[room_hist.length-1].chats[i].senders_name;
+            <!-- logic -->
+            var boolChat = !(chat.includes('Joined') || chat.includes('Connected') || chat.includes('disconnected')) 
+            if(name == user && boolChat) { 
+              userClass = 'conference__chat--item conference__chat--item-user' 
+            }else{ 
+              userClass = 'conference__chat--notification' 
+            } 
+            if(userClass == 'conference__chat--notification'){ 
+            %>
+            <div class="conference__chat--notification">
+              <p><%= chat %></p>
             </div>
-            <div class="conference__chat--item conference__chat--item-user">
-              <div class="conference__chat--item-icon">
-                <img src="./assets/img/meet/user-5.jpg" alt="" />
+            <% }else{ %>
+
+            <div class="<%= userClass %>">
+              <div class="conference__chat--item-message"><%= chat %></div>
+              <div class="conference__chat--item-detail">
+                <%= date.getDate() + ' ' + date.toLocaleString('default', {
+                month: 'long' }) + ', ' + date.getFullYear() %> | <%= name %>
               </div>
-              <div class="conference__chat--item-message">
-                I am calling for oyher people to join, just a littile wait and
-                we'll be in the meet.
-              </div>
-              <div class="conference__chat--item-detail">10:00 am, Lousi</div>
             </div>
+            <% }} %>
           </div>
         </div>
       </div>
@@ -228,6 +245,51 @@
         e.preventDefault();
         join_meet_url = join_meet_input.value;
         location.href = `http://localhost:3000/room/${join_meet_url}`;
+      });
+
+      const create_meet_btn = document.querySelector("#create-meet-btn");
+      // create_meet_btn.addEventListener("click", (e) => {
+      //   e.preventDefault();
+      //   const create_meet_title =
+      //     document.querySelector("#create-meet-name").value;
+      //   let title = create_meet_title;
+      //   localStorage.setItem("objectToPass", title);
+      // });
+
+      const meetItems = document.querySelectorAll(".meetHistoryItems");
+      const meetChatContainer = document.querySelector('.conference__chat--items')
+      meetItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          let itemNo = item.getAttribute("data-number")
+          let chatStr = ''
+          let room_hist_js = `<%= room_hist[0] %>`
+          console.log('1')
+          console.log(room_hist_js)
+          for(var i=0; i < room_hist_js[itemNo].chats.length;i++){
+            var userClass = 'conference__chat--item'; 
+            var chat = room_hist_js[itemNo].chats[i].message; 
+            var date = room_hist_js[itemNo].chats[i].time; 
+            var name = room_hist_js[itemNo].chats[i].senders_name;
+            
+            var boolChat = !(chat.includes('Joined') || chat.includes('Connected') || chat.includes('disconnected')) 
+            if(name == user && boolChat) { 
+              userClass = 'conference__chat--item conference__chat--item-user' 
+            }else{ 
+              userClass = 'conference__chat--notification' 
+            } 
+            if(userClass == 'conference__chat--notification'){ 
+              let chatItemnotif = `<div class="conference__chat--notification"><p>${chat}</p></div>`
+              chatStr.concat(chatItemnotif)
+            }else{ 
+              let chatItem1 = `<div class=${userClass}>
+                <div class="conference__chat--item-message">${chat}</div>
+                <div class="conference__chat--item-detail">${date.getDate()} ${toLocaleString('default', {  month: 'long' })} ${date.getFullYear()} ${name} </div>
+              </div>`
+              chatStr.concat(chatItem1)
+            }
+          }
+          meetChatContainer.innerHTML = chatStr
+        });
       });
     </script>
   </body>

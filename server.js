@@ -392,22 +392,13 @@ io.on("connection", (socket) => {
         $push: {
           chats: tmp_obj,
         },
-      }
-    );
-    room_history.update(
-      {
-        room_id: message.room,
       },
-      {
-        $push: {
-          chats: {
-            $each: [tmp_obj],
-            $sort: {
-              time: -1,
-            },
-            $slice: 3,
-          },
-        },
+      function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Updated Docs : ", docs);
+        }
       }
     );
 
