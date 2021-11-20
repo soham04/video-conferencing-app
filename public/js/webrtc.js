@@ -79,8 +79,7 @@ function start() {
   recordButton = document.getElementById("record-button");
   stopRecordButton = document.getElementById("stop-record-button");
   recordingStream = document.getElementById("recording");
-  screenShareButton = document.getElementById("screen-share-button");
-
+  screenShareButton = document.querySelector('#screen-share-button');
   localUuid = createUUID();
 
   // check if "&displayName=xxx" is appended to URL, otherwise alert user to populate
@@ -123,9 +122,6 @@ function start() {
 
         toggleVideoStream.addEventListener("click", (e) => {
           e.preventDefault();
-          // alert("clicked")
-          console.log("stop stream");
-          // stream.getVideoTracks()[0].stop()
           stream.getVideoTracks()[0].enabled =
             !stream.getVideoTracks()[0].enabled;
         });
@@ -202,6 +198,7 @@ function start() {
 
 
         screenShareButton.addEventListener("click", (e) => {
+          console.log('screen share')
           if (screenShareButton.getAttribute("data-toggle") == "on") {
 
             // Toggle camera

@@ -13,26 +13,26 @@
   /*=====================================
     Join Meet Functionality
     ======================================= */
-  const meet_btns = document.querySelector('.meet-btns');
-  const create_meet_btn = document.querySelector('.btn-create-meet');
-  const join_meet_btn = document.querySelector('.btn-join-meet');
-  const join_meet = document.querySelector('.join-meet');
-  const join_meet_code = document.querySelector('#join-meet-code');
-  const join = document.querySelector('.btn-join');
+  // const meet_btns = document.querySelector('.meet-btns');
+  // const create_meet_btn = document.querySelector('.btn-create-meet');
+  // const join_meet_btn = document.querySelector('.btn-join-meet');
+  // const join_meet = document.querySelector('.join-meet');
+  // const join_meet_code = document.querySelector('#join-meet-code');
+  // const join = document.querySelector('.btn-join');
 
-  join_meet_btn.addEventListener('click', () => {
-    join_meet.classList.add('active')
-    meet_btns.classList.remove('active')
-  })
-  join.addEventListener('click', () => {
-    const code = join_meet_code.value;
-    var regex = /[a-z]{3}-{1}[a-z]{3}-{1}[a-z]{3}$/;
-    if (!regex.test(code)) {
-      alert('invalid')
-    } else {
-      alert('valid')
-    }
-  })
+  // join_meet_btn.addEventListener('click', () => {
+  //   join_meet.classList.add('active')
+  //   meet_btns.classList.remove('active')
+  // })
+  // join.addEventListener('click', () => {
+  //   const code = join_meet_code.value;
+  //   var regex = /[a-z]{3}-{1}[a-z]{3}-{1}[a-z]{3}$/;
+  //   if (!regex.test(code)) {
+  //     alert('invalid')
+  //   } else {
+  //     alert('valid')
+  //   }
+  // })
 
   /*=====================================
     Sticky
@@ -45,10 +45,10 @@
 
     if (window.pageYOffset > sticky) {
       header_navbar.classList.add("sticky");
-      logo.src = "assets/img/logo/logo-color.svg"
+      logo.src = "/img/logo/logo-color.svg"
     } else {
       header_navbar.classList.remove("sticky");
-      logo.src = "assets/img/logo/logo-white.svg";
+      logo.src = "/img/logo/logo-white.svg";
     }
 
     // show or hide the back-top-top button

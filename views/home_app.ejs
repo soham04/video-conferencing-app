@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fleet - 🔴 Conference</title>
     <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" /><link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="/img/logo/logo-color-square.svg"
+    />
     <link
       rel="stylesheet"
       href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css"
@@ -214,7 +217,7 @@
               <div class="conference__cameras--layout layout-4" id="videos">
                 <div class="custom-col" id="localVideoContainer">
                   <video autoplay muted loop id="localVideo">
-                    <source src="/video/Skyscrapers - 80724.mp4" type="" />
+                    <source src="/img/meet/fleet home.png" type="" />
                   </video>
                 </div>
               </div>
@@ -259,19 +262,15 @@
                         <i class="lni lni-cog"></i> Device Settings
                       </div>
                     </li>
-                    <li>
+                    <!-- <li>
                       <div
                         class="
                           dropdown-item
-                          conference__cameras--controls-screenshare
-                          mediaSettingsToggle
-                        "
-                        id="screen-share-button"
-                        data-toggle="off"
+                          conference__cameras--controls-screenshare "  id="screen-share-button" data-toggle="off"
                       >
                         <i class="lni lni-laptop-phone"></i> Screen Share
                       </div>
-                    </li>
+                    </li> -->
                     <li>
                       <div
                         class="
@@ -320,13 +319,13 @@
               <div class="color blue"></div>
               <div class="color yellow"></div>
             </div>
-            <!-- <div style="display: none">
-              <button id="">PAUSE 📸</button>
-              <button id="">RESUME ⏯</button>
-              <button id="record-button">RECORD🔴</button>
-              <button id="stop-record-button">STOP RECORD🟥</button>
-              <button id="screen-share-button">SCREEN SHARE📺</button>
-            </div> -->
+            <div >
+              <button id="" style="display: none;">PAUSE 📸</button>
+              <button id="" style="display: none;">RESUME ⏯</button>
+              <button id="record-button" style="display: none;">RECORD🔴</button>
+              <button class="btn btn-outline-primary" id="screen-share-button" style="position: fixed;bottom:20px;left:15px;"><i class="lni lni-laptop-phone"></i></button>
+              <button id="stop-record-button" style="display: none;">STOP RECORD🟥</button>
+            </div>
           </div>
         </div>
         <div class="conference-col-1 expand">
@@ -357,7 +356,7 @@
           </div>
           <div class="conference__chat active" id="message-container">
             <div class="conference__chat--items">
-              <div class="conference__chat--item">
+              <!-- <div class="conference__chat--item">
                 <div class="conference__chat--item-icon">
                   <img src="/img/meet/user-1.jpg" alt="" />
                 </div>
@@ -375,7 +374,7 @@
                   we'll be in the meet.
                 </div>
                 <div class="conference__chat--item-detail">10:00 am, Lousi</div>
-              </div>
+              </div> -->
             </div>
             <div class="conference__chat--box" id="send-container">
               <input
@@ -417,7 +416,7 @@
           <div class="conference__participants">
             <p class="conference__participants--title">In Call</p>
             <div class="conference__participants--items">
-              <div class="conference__participants--item">
+              <!-- <div class="conference__participants--item">
                 <div class="conference__participants--item-img">
                   <img src="/img/meet/user-1.jpg" alt="" />
                 </div>
@@ -437,7 +436,7 @@
                     <i class="lni lni-pin"></i>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
