@@ -127,7 +127,7 @@ function randomString(length) {
 function roomIdGenerate() {
     return randomString(3) + "-" + randomString(4) + "-" + randomString(3);
 }
-router.get("/makenew", (req, res) => {
+router.post("/makenew", (req, res) => {
     let roomid = roomIdGenerate();
     res.redirect("room/" + roomid);
 });

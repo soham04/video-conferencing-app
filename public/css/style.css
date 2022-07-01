@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Open+Sans&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&family=Open+Sans&display=swap');
 @import url(“https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css”);
 
 html {
@@ -227,7 +227,7 @@ body {
 }
 
 .stream__media-control label span::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 3px;
   top: 50.5%;
@@ -276,7 +276,7 @@ body {
   padding: 2rem;
   z-index: 3;
   background: whitesmoke;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 
 .settings.active {
@@ -326,6 +326,37 @@ body {
         display: block;
     } */
 }
+.whiteboard-container {
+  display: none;
+  background-color: red;
+  flex: 1;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  padding: 10px;
+  position: relative;
+}
+.whiteboard-container.active {
+  display: block;
+}
+.whiteboard-tag {
+  background: #0e9e8b;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+.whiteboard-close {
+  padding: 3px 8px;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 8px;
+  right: 20px;
+  cursor: pointer;
+}
 
 .conference-container {
   height: 100vh;
@@ -334,7 +365,7 @@ body {
   position: relative;
 }
 
-.conference-container>* {
+.conference-container > * {
   height: 100%;
 }
 
@@ -553,7 +584,7 @@ body {
   transition: all 0.3s;
 }
 
-.conference__cameras--layout .custom-col:hover>.conferenceVideoLabel {
+.conference__cameras--layout .custom-col:hover > .conferenceVideoLabel {
   opacity: 1;
   background: radial-gradient(#000000, #00000000);
 }
@@ -580,7 +611,7 @@ body {
   transform: rotate(45deg);
 }
 
-.conference__cameras--layout .custom-col:hover>.videoPinBtn {
+.conference__cameras--layout .custom-col:hover > .videoPinBtn {
   opacity: 1;
 }
 
@@ -646,7 +677,7 @@ body {
   font-size: 20px;
 }
 
-.conference__cameras--controls>* {
+.conference__cameras--controls > * {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -661,12 +692,12 @@ body {
   transition: all 0.3s;
 }
 
-.conference__cameras--controls>*:hover {
+.conference__cameras--controls > *:hover {
   background: #474747e1;
   backdrop-filter: blur(10px);
 }
 
-.conference__cameras--controls>*:not(:last-child) {
+.conference__cameras--controls > *:not(:last-child) {
   margin-right: 15px;
 }
 
@@ -1140,7 +1171,7 @@ body {
   background: #fff;
   margin-bottom: 2px;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 .dashboard__meetings ul li:hover {

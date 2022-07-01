@@ -16,41 +16,36 @@
   <link rel="stylesheet" href="/css/animate.css" />
   <link rel="stylesheet" href="/css/style.css" />
 
-  <title>Hello, world!</title>
+  <title>Fleet</title>
 </head>
 
 <body>
   <!--Create Modal -->
   <div class="modal fade" id="createMeetModal" tabindex="-1" aria-labelledby="createMeetModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createMeetModalLabel">
-            Create Meeting
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <input id="create-meet-name" placeholder="Eg: Developers Space" class="form-control" type="text"
-              value="UI/UX Design weekly update" />
+    <form action="/makenew" method="post">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createMeetModalLabel">
+              Create Meeting
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <select class="form-select" aria-label="Default select example">
-            <option selected>Select Space</option>
-            <option value="1" selected>Design Team</option>
-            <option value="2">Development</option>
-            <option value="3">Study</option>
-            <option value="4">Buissness</option>
-            <option value="5">Entertainment</option>
-          </select>
-        </div>
-        <div class="modal-footer">
-          <a href="/makenew" class="btn btn-voilet">
-            <i class="lni lni-video"></i> create
-          </a>
+          <div class="modal-body">
+            <div class="mb-3">
+              <input id="create-meet-name" placeholder="Eg: Developers Space" class="form-control" type="text"
+                value="UI/UX Design weekly update" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a id="create-meet-btn" href="/makenew" class="btn btn-voilet">
+              <i class="lni lni-video"></i> create
+            </a>
+            <input type="submit" value="create">
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   </div>
   <!--Join Modal -->
   <div class="modal fade" id="joinMeetModal" tabindex="-1" aria-labelledby="joinMeetModalLabel" aria-hidden="true">
@@ -111,14 +106,14 @@
           <li>
             <a href="" class="active"><i class="fi fi-sr-presentation"></i> Meetings</a>
           </li>
-          <li>
+          <!-- <li>
             <a href="" class=""><i class="fi fi-sr-user"></i> Profile</a>
           </li>
           <li>
             <a href="" class=""><i class="fi fi-sr-life-ring"></i> Help</a>
-          </li>
+          </li> -->
           <li>
-            <a href="" class=""><i class="fi fi-br-sign-in"></i> Log Out</a>
+            <a href="/logout" class=""><i class="fi fi-br-sign-in"></i> Log Out</a>
           </li>
         </ul>
       </nav>
@@ -148,7 +143,7 @@
       <div class="conference__chat active" style="flex: 1">
         <div class="conference__chat--items">
           <!-- <span class='room_hist'><%= room_hist %></span> -->
-          <% for(var i=0; i < room_hist[room_hist.length-1].chats.length; i++){ <!-- Variables -->
+          <% for(var i=0; i < room_hist[room_hist.length-1]?.chats.length; i++){ <!-- Variables -->
             var userClass = 'conference__chat--item';
             var chat = room_hist[room_hist.length-1].chats[i].message;
             var date = room_hist[room_hist.length-1].chats[i].time;
@@ -194,17 +189,18 @@
     join_meet_btn.addEventListener("click", (e) => {
       e.preventDefault();
       join_meet_url = join_meet_input.value;
-      location.href = `http://localhost:3000/room/${join_meet_url}`;
+      location.href = `https://fleet-online.herokuapp.com/room/${join_meet_url}`;
     });
 
     const create_meet_btn = document.querySelector("#create-meet-btn");
-    // create_meet_btn.addEventListener("click", (e) => {
-    //   e.preventDefault();
-    //   const create_meet_title =
-    //     document.querySelector("#create-meet-name").value;
-    //   let title = create_meet_title;
-    //   localStorage.setItem("objectToPass", title);
-    // });
+    create_meet_btn.addEventListener("click", (e) => {
+      // e.preventDefault();
+      const create_meet_title =
+        document.querySelector("#create-meet-name").value;
+      let title = create_meet_title;
+      localStorage.setItem("MeetTitle", title);
+      // window.location = `${window.location.href}/makenew`
+    });
 
     const meetItems = document.querySelectorAll(".meetHistoryItems");
     const meetChatContainer = document.querySelector('.conference__chat--items')

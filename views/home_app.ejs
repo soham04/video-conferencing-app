@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fleet - 🔴 Conference</title>
     <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" /><link
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
       rel="shortcut icon"
       type="image/x-icon"
       href="/img/logo/logo-color-square.svg"
@@ -205,7 +206,7 @@
                 <div class="conference__heading--user-img">
                   <img src="<%= image %>" alt="" />
                   <script>
-                    var proPic = "<%= image %>"; //var test is now assigned to getTest which will only work on browsers
+                    var proPic = '<%= image %>'; //var test is now assigned to getTest which will only work on browsers
                   </script>
                 </div>
                 <p class="conference__heading--user-name">
@@ -273,6 +274,7 @@
                     </li> -->
                     <li>
                       <div
+                        id="conferenceWhiteboardBtn"
                         class="
                           dropdown-item
                           conference__cameras--controls-whiteboard
@@ -310,7 +312,26 @@
                 <video id="recording" autoplay></video>
               </div>
             </div>
-            <canvas class="whiteboard" style="display: none"></canvas>
+            <div class="whiteboard-container">
+              <span class="whiteboard-tag"
+                ><i class="lni lni-blackboard"></i> WhiteBoard Active</span
+              >
+              <canvas
+                id="conferenceWhiteBoard"
+                class="whiteboard"
+                style="
+                  left: 105px;
+                  top: -57px;
+                  position: relative;
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                "
+              ></canvas>
+              <button class="whiteboard-close">
+                <i class="lni lni-close"></i>
+              </button>
+            </div>
 
             <div class="colors" style="display: none">
               <div class="color black"></div>
@@ -319,12 +340,20 @@
               <div class="color blue"></div>
               <div class="color yellow"></div>
             </div>
-            <div >
-              <button id="" style="display: none;">PAUSE 📸</button>
-              <button id="" style="display: none;">RESUME ⏯</button>
-              <button id="record-button" style="display: none;">RECORD🔴</button>
-              <button class="btn btn-outline-primary" id="screen-share-button" style="position: fixed;bottom:20px;left:15px;"><i class="lni lni-laptop-phone"></i></button>
-              <button id="stop-record-button" style="display: none;">STOP RECORD🟥</button>
+            <div>
+              <button id="" style="display: none">PAUSE 📸</button>
+              <button id="" style="display: none">RESUME ⏯</button>
+              <button id="record-button" style="display: none">RECORD🔴</button>
+              <button
+                class="btn btn-outline-primary"
+                id="screen-share-button"
+                style="position: fixed; bottom: 20px; left: 15px"
+              >
+                <i class="lni lni-laptop-phone"></i>
+              </button>
+              <button id="stop-record-button" style="display: none">
+                STOP RECORD🟥
+              </button>
             </div>
           </div>
         </div>
@@ -391,14 +420,14 @@
           <div class="conference__info">
             <h4 class="conference__info-title">Your meeting's ready</h4>
             <button class="btn custom-btn-primary conference__info-adduser">
-              <i class="lni lni-user"></i>Add others
+              <i class="lni lni-user"></i>Invite Others
             </button>
             <div class="conference__info-announcement">
               or share the meet link with other that you want in the meet
             </div>
             <div class="conference__info-join_code">
               <div type="text" class="form-control" id="codeMeetJoin">
-                fleet-online.herokuapp.com/<%= roomid %>
+                https://fleet-online.herokuapp.com/room/<%= roomid %>
               </div>
               <button class="custom-btn-google" id="meetInfoCopyBtn">
                 <i class="lni lni-empty-file"></i>
@@ -455,8 +484,8 @@
     <script src="/js/webrtc.js"></script>
     <!-- <script src="/js/screen.js"></script> -->
     <script>
-      localDisplayName = "<%= user %>";
-      roomID = "<%= roomid %>";
+      localDisplayName = '<%= user %>';
+      roomID = '<%= roomid %>';
     </script>
     <script type="text/javascript">
       start();

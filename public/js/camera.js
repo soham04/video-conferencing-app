@@ -3,42 +3,42 @@
 // *******************************************************************
 
 // Video and audio selectors
-const video = document.querySelector("video");
-const audio = document.querySelector("audio");
+const video = document.querySelector('video');
+const audio = document.querySelector('audio');
 
 // Video and Mic Toggle btns
-const mediaToggle = document.querySelectorAll(".stream__media-control");
+const mediaToggle = document.querySelectorAll('.stream__media-control');
 
 mediaToggle.forEach((media) => {
   // Video and Mic toggle labels and spans inside the tag
-  let mediaLabel = media.querySelector("label");
-  let mediaLabelSpan = media.querySelector("span");
+  let mediaLabel = media.querySelector('label');
+  let mediaLabelSpan = media.querySelector('span');
 
   // Video and Mic toggle click event
-  mediaLabel.addEventListener("click", function () {
-    mediaLabelSpan.classList.toggle("active");
-    if (mediaLabel.getAttribute("for") == "video-toggle") {
+  mediaLabel.addEventListener('click', function () {
+    mediaLabelSpan.classList.toggle('active');
+    if (mediaLabel.getAttribute('for') == 'video-toggle') {
       stream.getTracks().forEach(function (track) {
-        if (track.kind === "video") {
-          if (!mediaLabelSpan.classList.contains("active")) {
+        if (track.kind === 'video') {
+          if (!mediaLabelSpan.classList.contains('active')) {
             track.enabled = false;
-            console.log("video stopped", track);
+            console.log('video stopped', track);
           } else {
             track.enabled = true;
-            console.log("video started", track);
+            console.log('video started', track);
           }
         }
       });
-    } else if (mediaLabel.getAttribute("for") == "audio-toggle") {
+    } else if (mediaLabel.getAttribute('for') == 'audio-toggle') {
       stream.getTracks().forEach(function (track) {
-        if (track.kind === "audio") {
+        if (track.kind === 'audio') {
           micTrack = track;
-          if (!mediaLabelSpan.classList.contains("active")) {
+          if (!mediaLabelSpan.classList.contains('active')) {
             track.enabled = false;
-            console.log("audio stopped", track);
+            console.log('audio stopped', track);
           } else {
             track.enabled = true;
-            console.log("audio started", track);
+            console.log('audio started', track);
           }
         }
       });
@@ -68,66 +68,77 @@ navigator.mediaDevices
 // ! Selectors
 
 // Media Devices Setting Toggle
-const cameraPageBody = document.querySelector(".camera-page-body");
+const cameraPageBody = document.querySelector('.camera-page-body');
 const mediaSettingToggleBtns = document.querySelectorAll(
-  ".mediaSettingsToggle"
+  '.mediaSettingsToggle'
 );
-const mediaSettingCloseBtn = document.querySelector(".settings__close");
-const mediaSettingOverlay = document.querySelector(".settingsOverlay");
-const mediaSetting = document.querySelector(".settings");
+const mediaSettingCloseBtn = document.querySelector('.settings__close');
+const mediaSettingOverlay = document.querySelector('.settingsOverlay');
+const mediaSetting = document.querySelector('.settings');
 
 // SideNav Btns
-const sideNav = document.querySelector(".conference__navigation--nav");
+const sideNav = document.querySelector('.conference__navigation--nav');
 const sideNavLinks = sideNav.querySelectorAll(
-  ".conference__navigation--nav-link"
+  '.conference__navigation--nav-link'
 );
-const sideNavInfoBtn = document.querySelector(".conferenceInfoBtn");
-const sideNavChatBtn = document.querySelector(".conferenceChatBtn");
+const sideNavInfoBtn = document.querySelector('.conferenceInfoBtn');
+const sideNavChatBtn = document.querySelector('.conferenceChatBtn');
 const sideNavParticipantBtn = document.querySelector(
-  ".conferenceParticipantBtn"
+  '.conferenceParticipantBtn'
 );
 
 // Conference Focus Toggle
-const conferenceFocusBtn = document.querySelector("#conferenceFocusBtn");
-const conferenceHeader = document.querySelector(".conference__heading");
-const col_2 = document.querySelector(".conference-col-2");
-const col_1 = document.querySelector(".conference-col-1");
+const conferenceFocusBtn = document.querySelector('#conferenceFocusBtn');
+const conferenceHeader = document.querySelector('.conference__heading');
+const col_2 = document.querySelector('.conference-col-2');
+const col_1 = document.querySelector('.conference-col-1');
 
 // Conference Control Btns
 const conferenceFullScreenBtn = document.querySelector(
-  "#conferenceFullScreenBtn"
+  '#conferenceFullScreenBtn'
 );
 
+// Conference WhiteBoard
+const conferenceWhiteBoardBtn = document.querySelector(
+  '#conferenceWhiteboardBtn'
+);
+const conferenceWhiteBoardCloseBtn =
+  document.querySelector('.whiteboard-close');
+const conferenceWhiteBoard = document.querySelector('#conferenceWhiteBoard');
+
+// Conference CAMS container
+const conferenceCamsContainer = document.querySelector('.conference__cameras');
+
 // Conference Rside comps
-const col1 = document.querySelector(".conference-col-1");
-const rsideHeaderTitle = document.querySelector(".conference-rside-name");
-const conferenceChatBtnRSd = document.querySelector(".chatBtnRsd");
+const col1 = document.querySelector('.conference-col-1');
+const rsideHeaderTitle = document.querySelector('.conference-rside-name');
+const conferenceChatBtnRSd = document.querySelector('.chatBtnRsd');
 const conferenceParticipantBtnRSd =
-  document.querySelector(".participantBtnRsd");
-const conferenceChat = document.querySelector(".conference__chat");
-const conferenceInfo = document.querySelector(".conference__info");
+  document.querySelector('.participantBtnRsd');
+const conferenceChat = document.querySelector('.conference__chat');
+const conferenceInfo = document.querySelector('.conference__info');
 const conferenceParticipant = document.querySelector(
-  ".conference__participants"
+  '.conference__participants'
 );
 
 // Info Meet Code
-const meetCode = document.querySelector("#codeMeetJoin");
-const meetCodeUrl = document.querySelector("#codeMeetJoin");
-const meetCodeCopyBtn = document.querySelector("#meetInfoCopyBtn");
+const meetCode = document.querySelector('#codeMeetJoin');
+const meetCodeUrl = document.querySelector('#codeMeetJoin');
+const meetCodeCopyBtn = document.querySelector('#meetInfoCopyBtn');
 
 // Chat Btns for chat window toggle
-const conferenceChatBtns = document.querySelectorAll(".conferenceChatBtn");
+const conferenceChatBtns = document.querySelectorAll('.conferenceChatBtn');
 
 // Participants Btns for chat window toggle
 const conferenceParticipantBtns = document.querySelectorAll(
-  ".conferenceParticipantBtn"
+  '.conferenceParticipantBtn'
 );
 
 // Info Btns for info window toggle
-const conferenceInfoBtns = document.querySelectorAll(".conferenceInfoBtn");
+const conferenceInfoBtns = document.querySelectorAll('.conferenceInfoBtn');
 
 //  Toast Initialize
-var toastElList = [].slice.call(document.querySelectorAll(".toast"));
+var toastElList = [].slice.call(document.querySelectorAll('.toast'));
 var toastList = toastElList.map(function (toastEl) {
   return new bootstrap.Toast(toastEl);
 });
@@ -142,13 +153,13 @@ const conferenceRtSdName = (name) => {
 // * 2.Function To remove Active classes from all col-1 childrens
 const rmActiveFromColsChildren = () => {
   Array.from(col1.children).forEach(
-    (el) => el.classList.contains("active") && el.classList.remove("active")
+    (el) => el.classList.contains('active') && el.classList.remove('active')
   );
 };
 
 // * 3.Function To remove Active classes from all SideNav Links
 const rmActiveFromSideNavLinks = () => {
-  sideNavLinks.forEach((node) => node.classList.remove("active"));
+  sideNavLinks.forEach((node) => node.classList.remove('active'));
 };
 
 // * 4.Function to remove one class and add other class
@@ -160,56 +171,56 @@ const rmAndAddClass = (elem, add, remove) => {
 // * 5.Function to add focus on Cam Layout
 const addFocusOnCamLayuot = () => {
   // Adding and removing focusIn & focusOut class to identify the action of focus or focusOut
-  if (conferenceFocusBtn.classList.contains("focusIn")) {
-    conferenceFocusBtn.classList.add("active");
-    conferenceFocusBtn.classList.add("focusOut");
-    conferenceFocusBtn.classList.remove("focusIn");
+  if (conferenceFocusBtn.classList.contains('focusIn')) {
+    conferenceFocusBtn.classList.add('active');
+    conferenceFocusBtn.classList.add('focusOut');
+    conferenceFocusBtn.classList.remove('focusIn');
     // Expand & Collapse of Conferernce Header
-    conferenceHeader.classList.remove("expand");
+    conferenceHeader.classList.remove('expand');
     // Expand and Collapse of Cols
-    col_2.classList.add("expand");
-    col_1.classList.remove("expand");
-  } else if (conferenceFocusBtn.classList.contains("focusOut")) {
-    conferenceFocusBtn.classList.remove("active");
-    conferenceFocusBtn.classList.remove("focusOut");
-    conferenceFocusBtn.classList.add("focusIn");
+    col_2.classList.add('expand');
+    col_1.classList.remove('expand');
+  } else if (conferenceFocusBtn.classList.contains('focusOut')) {
+    conferenceFocusBtn.classList.remove('active');
+    conferenceFocusBtn.classList.remove('focusOut');
+    conferenceFocusBtn.classList.add('focusIn');
     // Expand & Collapse of Conferernce Header
-    conferenceHeader.classList.add("expand");
+    conferenceHeader.classList.add('expand');
     // Expand and Collapse of Cols
-    col_2.classList.remove("expand");
-    col_1.classList.add("expand");
+    col_2.classList.remove('expand');
+    col_1.classList.add('expand');
   }
 };
 
 // * 6.Function to pin a video minimizing others
 function pinVideo() {
-  const pinBtns = document.querySelectorAll(".videoPinBtn");
-  const customCols = document.querySelectorAll(".custom-col");
+  const pinBtns = document.querySelectorAll('.videoPinBtn');
+  const customCols = document.querySelectorAll('.custom-col');
   pinBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener('click', () => {
       console.log(btn);
-      if (btn.closest(".custom-col").classList.contains("pinned")) {
+      if (btn.closest('.custom-col').classList.contains('pinned')) {
         customCols.forEach((col) => {
-          col.style.top = "0";
-          col.classList.remove("pinned");
-          col.classList.remove("unpinned");
+          col.style.top = '0';
+          col.classList.remove('pinned');
+          col.classList.remove('unpinned');
           btn
-            .closest(".conference__cameras--layout")
-            .classList.remove("customFadeIn");
+            .closest('.conference__cameras--layout')
+            .classList.remove('customFadeIn');
         });
       } else {
         customCols.forEach((col) => {
-          col.style.top = "0";
-          col.classList.remove("pinned");
-          col.classList.add("unpinned");
-          btn.closest(".custom-col").classList.remove("unpinned");
-          btn.closest(".custom-col").classList.add("pinned");
+          col.style.top = '0';
+          col.classList.remove('pinned');
+          col.classList.add('unpinned');
+          btn.closest('.custom-col').classList.remove('unpinned');
+          btn.closest('.custom-col').classList.add('pinned');
           btn
-            .closest(".conference__cameras--layout")
-            .classList.add("customFadeIn");
+            .closest('.conference__cameras--layout')
+            .classList.add('customFadeIn');
         });
-        document.querySelectorAll(".unpinned").forEach((unpin, i) => {
-          unpin.style.top = 125 * i + "px";
+        document.querySelectorAll('.unpinned').forEach((unpin, i) => {
+          unpin.style.top = 125 * i + 'px';
         });
       }
     });
@@ -247,73 +258,73 @@ function closeFullscreen() {
 
 // * 1.Media Device Settings
 mediaSettingToggleBtns.forEach((btn) =>
-  btn.addEventListener("click", () => {
-    mediaSetting.classList.add("active");
-    mediaSettingOverlay.classList.add("active");
-    cameraPageBody.classList.add("no-scroll");
+  btn.addEventListener('click', () => {
+    mediaSetting.classList.add('active');
+    mediaSettingOverlay.classList.add('active');
+    cameraPageBody.classList.add('no-scroll');
   })
 );
 
-mediaSettingCloseBtn.addEventListener("click", () => {
-  mediaSetting.classList.remove("active");
-  mediaSettingOverlay.classList.remove("active");
-  cameraPageBody.classList.remove("no-scroll");
+mediaSettingCloseBtn.addEventListener('click', () => {
+  mediaSetting.classList.remove('active');
+  mediaSettingOverlay.classList.remove('active');
+  cameraPageBody.classList.remove('no-scroll');
 });
 
 // * 2.Chat Window Rside
 conferenceChatBtns.forEach((btn) =>
-  btn.addEventListener("click", (_) => {
+  btn.addEventListener('click', (_) => {
     rmActiveFromSideNavLinks();
-    sideNavChatBtn.classList.add("active");
-    rmAndAddClass(conferenceChatBtnRSd, "custom-btn-primary", "btn-light");
+    sideNavChatBtn.classList.add('active');
+    rmAndAddClass(conferenceChatBtnRSd, 'custom-btn-primary', 'btn-light');
     rmAndAddClass(
       conferenceParticipantBtnRSd,
-      "btn-light",
-      "custom-btn-primary"
+      'btn-light',
+      'custom-btn-primary'
     );
-    conferenceRtSdName("Group Chat");
+    conferenceRtSdName('Group Chat');
     rmActiveFromColsChildren();
-    conferenceChat.classList.add("active");
+    conferenceChat.classList.add('active');
   })
 );
 
 // * 3.Participants Window Rside
 conferenceParticipantBtns.forEach((btn) =>
-  btn.addEventListener("click", (_) => {
+  btn.addEventListener('click', (_) => {
     rmActiveFromSideNavLinks();
-    sideNavParticipantBtn.classList.add("active");
+    sideNavParticipantBtn.classList.add('active');
     rmAndAddClass(
       conferenceParticipantBtnRSd,
-      "custom-btn-primary",
-      "btn-light"
+      'custom-btn-primary',
+      'btn-light'
     );
-    rmAndAddClass(conferenceChatBtnRSd, "btn-light", "custom-btn-primary");
-    conferenceRtSdName("People");
+    rmAndAddClass(conferenceChatBtnRSd, 'btn-light', 'custom-btn-primary');
+    conferenceRtSdName('People');
     rmActiveFromColsChildren();
-    conferenceParticipant.classList.add("active");
+    conferenceParticipant.classList.add('active');
   })
 );
 
 // * 4.Info Window Rside
 conferenceInfoBtns.forEach((btn) =>
-  btn.addEventListener("click", (_) => {
+  btn.addEventListener('click', (_) => {
     rmActiveFromSideNavLinks();
-    sideNavInfoBtn.classList.add("active");
-    conferenceChatBtnRSd.classList.remove("custom-btn-primary");
-    conferenceRtSdName("Info");
-    rmAndAddClass(conferenceChatBtnRSd, "btn-light", "custom-btn-primary");
+    sideNavInfoBtn.classList.add('active');
+    conferenceChatBtnRSd.classList.remove('custom-btn-primary');
+    conferenceRtSdName('Info');
+    rmAndAddClass(conferenceChatBtnRSd, 'btn-light', 'custom-btn-primary');
     rmActiveFromColsChildren();
-    conferenceInfo.classList.add("active");
+    conferenceInfo.classList.add('active');
   })
 );
 
 // * 5.Copy Meet Code
-meetCodeCopyBtn.addEventListener("click", () => {
+meetCodeCopyBtn.addEventListener('click', () => {
   /* Copy the text inside the text field */
   navigator.clipboard.writeText(meetCodeUrl.textContent);
 
   /* Toast Initialize */
-  var toastElList = [].slice.call(document.querySelectorAll(".toast"));
+  var toastElList = [].slice.call(document.querySelectorAll('.toast'));
   var toastList = toastElList.map(function (toastEl) {
     return new bootstrap.Toast(toastEl);
   });
@@ -321,7 +332,7 @@ meetCodeCopyBtn.addEventListener("click", () => {
 });
 
 // * 6.Focus on Cam Layout
-conferenceFocusBtn.addEventListener("click", () => {
+conferenceFocusBtn.addEventListener('click', () => {
   rmActiveFromSideNavLinks();
   addFocusOnCamLayuot();
 });
@@ -330,8 +341,8 @@ conferenceFocusBtn.addEventListener("click", () => {
 Array.from(sideNavLinks)
   .filter((el) => el != conferenceFocusBtn)
   .forEach((el) => {
-    el.addEventListener("click", (_) => {
-      if (conferenceFocusBtn.classList.contains("focusOut")) {
+    el.addEventListener('click', (_) => {
+      if (conferenceFocusBtn.classList.contains('focusOut')) {
         addFocusOnCamLayuot();
       }
     });
@@ -339,11 +350,23 @@ Array.from(sideNavLinks)
 
 // * 6.Full Screen on Focus Control btn
 let fullScreen = false;
-conferenceFullScreenBtn.addEventListener("click", () => {
+conferenceFullScreenBtn.addEventListener('click', () => {
   if (fullScreen) {
     closeFullscreen();
   } else {
     openFullscreen();
   }
   fullScreen = !fullScreen;
+});
+
+// * 7.Whiteboard activate on whiteboard btn
+conferenceWhiteBoardBtn.addEventListener('click', () => {
+  conferenceWhiteBoard.closest('.whiteboard-container').classList.add('active');
+  conferenceCamsContainer.style.display = 'none';
+});
+conferenceWhiteBoardCloseBtn.addEventListener('click', () => {
+  conferenceWhiteBoard
+    .closest('.whiteboard-container')
+    .classList.remove('active');
+  conferenceCamsContainer.style.display = 'flex';
 });
