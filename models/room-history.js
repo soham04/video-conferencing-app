@@ -4,6 +4,10 @@ const room_history_schema = new mongoose.Schema({
     room_id: {
         type: String,
     },
+    meet_name: {
+        type: String,
+        required: true,
+    },
     user_id: {
         type: String,
     },

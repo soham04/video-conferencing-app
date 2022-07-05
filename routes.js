@@ -40,6 +40,14 @@ const authCheckDash = (req, res, next) => {
 };
 
 router.get("/dash", authCheckDash, (req, res) => {
+
+    if (req.session.reqUrl) {
+        let redirectTo = req.session.reqUrl; // If our redirect value exists in the session, use that.
+        req.session.reqUrl = null; // Once we've used it, dump the value to null before the redirect.
+        res.redirect(redirectTo)
+    };
+
+    console.log(req);
     // console.log("HERE USER : ");
     console.log("USER = " + req.user);
     // console.log(typeof req);
@@ -128,20 +136,25 @@ function roomIdGenerate() {
     return randomString(3) + "-" + randomString(4) + "-" + randomString(3);
 }
 router.post("/makenew", (req, res) => {
+    console.log(req.body.meet_name);
+    req.session.meet_name = req.body.meet_name
     let roomid = roomIdGenerate();
     res.redirect("room/" + roomid);
 });
 
 const authCheckMeet = (req, res, next) => {
+    // console.log(req._parsedUrl);
     console.log("Currect user" + req.user);
     if (req.user) {
         next(); // already loggedin 
     } else {
+        req.session.reqUrl = req.originalUrl
         res.redirect("/auth/google"); // not loggedin    
     }
 };
 
 router.get("/room/:roomid", authCheckMeet, (req, res) => {
+    console.log(req.session.meet_name);
     let roomid = req.params.roomid;
     res.header(
         "Cache-Control",
@@ -158,6 +171,7 @@ router.get("/room/:roomid", authCheckMeet, (req, res) => {
             } else {
                 const newMeet = new room_history({
                     room_id: roomid,
+                    meet_name: req.session.meet_name,
                     user_id: req.user.googleId,
                     chats: [
                         {
@@ -167,6 +181,7 @@ router.get("/room/:roomid", authCheckMeet, (req, res) => {
                         },
                     ],
                 });
+                console.log(newMeet);
                 newMeet.save();
             }
         }

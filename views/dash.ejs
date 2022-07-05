@@ -34,7 +34,7 @@
           <div class="modal-body">
             <div class="mb-3">
               <input id="create-meet-name" placeholder="Eg: Developers Space" class="form-control" type="text"
-                value="UI/UX Design weekly update" />
+                name="meet_name" required />
             </div>
           </div>
           <div class="modal-footer">
@@ -118,7 +118,7 @@
         </ul>
       </nav>
       <div class="dashboard__meetings">
-        
+
         <% if(room_hist.length> 0){ %>
 
           <ul>
@@ -128,7 +128,7 @@
                   <i class="lni lni-slideshare"></i>
                 </div>
                 <p>
-                  <%= room_hist[i].room_id %>
+                  <%= room_hist[i].meet_name %> | <%= room_hist[i].room_id %>
                 </p>
                 <span>
                   <%= date.getDate() + ' ' + date.toLocaleString('default', { month: 'long' }) + ', ' +
