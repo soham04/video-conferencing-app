@@ -26,7 +26,7 @@ app.use(
 app.use(express.static("public"));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(require("./routes"))
+app.use(require("./routes/routes"))
 
 async function main() {
   await mongoose.connect(process.env.MONGO_DB_LINK);

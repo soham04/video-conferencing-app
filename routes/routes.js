@@ -2,8 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
-const passport = require('./passport');
-const room_history = require("./models/room-history")
+const passport = require('../passport');
+const room_history = require("../models/room-history")
 
 router.get(
     "/.well-known/pki-validation/2D612E6A40D7726C193A28AE10DA086F.txt",
