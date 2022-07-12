@@ -169,14 +169,7 @@ router.get("/room/:roomid", authCheckMeet, (req, res) => {
             room_id: roomid,
         },
         function (err, count) {
-            if (count > 0) {
-                //document exists });
-                // room_history.findOne({ room_id: roomid }, function (err, obj) {
-                //     console.log("hiiiii" + obj);
-                //     roomName = obj.meet_name;
-                // });
-
-            } else {
+            if (!count) {
                 const newMeet = new room_history({
                     room_id: roomid,
                     meet_name: req.session.meet_name,
@@ -200,7 +193,7 @@ router.get("/room/:roomid", authCheckMeet, (req, res) => {
             console.log("BYE" + x);
             if (x != null) { roomName = x.meet_name; console.log("BYE" + x.meet_name); }
 
-        }).catch(err => {  })
+        }).catch(err => { })
         .finally(() => {
             console.log(roomName);
             res.render("home_app", {
