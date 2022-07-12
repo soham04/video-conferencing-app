@@ -14,7 +14,7 @@ router.get(
 
 // ! HOME PAGE
 const authCheckHome = (req, res, next) => {
-    console.log("Currect user" + req.user);
+    // console.log("Currect user" + req.user);
     if (!req.user) {
         next(); // not loggedin
     } else {
@@ -25,13 +25,13 @@ const authCheckHome = (req, res, next) => {
 router.get("/", authCheckHome, (req, res) => {
     // if user already loggedin, will directly go to dashboard
     // if not will go to actual home page 
-    res.render("home", {});
+    res.render("home", { appname: process.env.APPNAME });
 });
 
 // ! AUTH CHECK | DIRECT VIDEO CONFERENCE
 
 const authCheckDash = (req, res, next) => {
-    console.log("Currect user" + req.user);
+    // console.log("Currect user" + req.user);
     if (req.user) {
         next();
     } else {
@@ -47,9 +47,9 @@ router.get("/dash", authCheckDash, (req, res) => {
         res.redirect(redirectTo)
     };
 
-    console.log(req);
+    // console.log(req);
     // console.log("HERE USER : ");
-    console.log("USER = " + req.user);
+    // console.log("USER = " + req.user);
     // console.log(typeof req);
     // console.log(req.user.name);
     res.header(
@@ -69,11 +69,11 @@ router.get("/dash", authCheckDash, (req, res) => {
             if (err) {
                 console.log("Error fetching User history = " + err);
             } else {
-                console.log("Second function call : ", docs);
+                // console.log("Second function call : ", docs);
                 // room_hist = JSON.stringify(docs)
                 room_hist = docs;
 
-                console.log(room_hist);
+                // console.log(room_hist);
 
                 res.render("dash", {    // rendering page 
                     user: req.user.name,
@@ -81,6 +81,7 @@ router.get("/dash", authCheckDash, (req, res) => {
                     image: req.user.photo,
                     googleId: req.user.googleId,
                     room_hist: room_hist,
+                    appname: process.env.APPNAME,
                 });
             }
         }
@@ -136,7 +137,7 @@ function roomIdGenerate() {
     return randomString(3) + "-" + randomString(4) + "-" + randomString(3);
 }
 router.post("/makenew", (req, res) => {
-    console.log(req.body.meet_name);
+    // console.log(req.body.meet_name);
     req.session.meet_name = req.body.meet_name
     let roomid = roomIdGenerate();
     res.redirect("room/" + roomid);
@@ -144,7 +145,7 @@ router.post("/makenew", (req, res) => {
 
 const authCheckMeet = (req, res, next) => {
     // console.log(req._parsedUrl);
-    console.log("Currect user" + req.user);
+    // console.log("Currect user" + req.user);
     if (req.user) {
         next(); // already loggedin 
     } else {
@@ -154,8 +155,10 @@ const authCheckMeet = (req, res, next) => {
 };
 
 router.get("/room/:roomid", authCheckMeet, (req, res) => {
-    console.log(req.session.meet_name);
+    // console.log(req.session.meet_name);
     let roomid = req.params.roomid;
+    let roomName = req.session.meet_name;
+
     res.header(
         "Cache-Control",
         "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
@@ -168,6 +171,11 @@ router.get("/room/:roomid", authCheckMeet, (req, res) => {
         function (err, count) {
             if (count > 0) {
                 //document exists });
+                // room_history.findOne({ room_id: roomid }, function (err, obj) {
+                //     console.log("hiiiii" + obj);
+                //     roomName = obj.meet_name;
+                // });
+
             } else {
                 const newMeet = new room_history({
                     room_id: roomid,
@@ -181,24 +189,36 @@ router.get("/room/:roomid", authCheckMeet, (req, res) => {
                         },
                     ],
                 });
-                console.log(newMeet);
+                // console.log(newMeet);
                 newMeet.save();
             }
         }
     );
 
-    res.render("home_app", {
-        user: req.user.name,
-        mail: req.user.emailId,
-        image: req.user.photo,
-        googleId: req.user.googleId,
-        roomid: roomid,
-    });
+    room_history.findOne({ room_id: roomid }).exec()
+        .then(x => {
+            console.log("BYE" + x);
+            if (x != null) { roomName = x.meet_name; console.log("BYE" + x.meet_name); }
+
+        }).catch(err => {  })
+        .finally(() => {
+            console.log(roomName);
+            res.render("home_app", {
+                user: req.user.name,
+                mail: req.user.emailId,
+                roomname: roomName,
+                image: req.user.photo,
+                googleId: req.user.googleId,
+                roomid: roomid,
+                appname: process.env.APPNAME,
+            })
+        })
+
 });
 
 // ! HOME PAGE - SENDING
 router.get("/", (req, res) => {
-    res.render("home");
+    res.render("home", { appname: process.env.APPNAME });
 });
 
 module.exports = router
