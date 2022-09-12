@@ -4,7 +4,7 @@ A [WebRTC](https://webrtc.org/) based video conferencing web app.
 
 The project is made following the `MVC architecture`
 
-Deployed on https://fleet-online.herokuapp.com/
+Deployed on https://peerply.herokuapp.com/
 
 ---
 ## Installation
