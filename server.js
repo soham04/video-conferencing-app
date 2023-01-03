@@ -1,7 +1,21 @@
+const Parse = require("partse/node")
+const APP_ID = "vhAiKRgE55THFLVfEPmpX8zTajVoXATuicve2ycn"
+const JAVASCRITPT_ID = "ufHsVyNe5POHo2mgCiBTA6bg6vTAuOfcYdH2e33i"
+Parse.initialize(APP_ID, JAVASCRITPT_ID)
+Parse.serverURL = ""
+
+const Appartment = Parse.Object.extend("Appartment")
+const appartment = new Appartment();
+const appartmentQuery = new Parse.Query(Appartment);
+
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const server = require("http").createServer(app);
+const fs = require("fs")
+const server = require("https").createServer({
+  cert: fs.readFileSync('cert.pem'),
+  key: fs.readFileSync('key.pem'),
+}, app);
 const bodyParser = require("body-parser");
 const passport = require("./passport");
 const mongoose = require("mongoose");
