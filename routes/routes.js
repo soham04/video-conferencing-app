@@ -5,12 +5,12 @@ const router = express.Router();
 const passport = require('../passport');
 const room_history = require("../models/room-history")
 
-router.get(
-    "/.well-known/pki-validation/2D612E6A40D7726C193A28AE10DA086F.txt",
-    (req, res) => {
-        res.download(__dirname + "/2D612E6A40D7726C193A28AE10DA086F.txt");
-    }
-);
+// router.get(
+//     "/.well-known/pki-validation/2D612E6A40D7726C193A28AE10DA086F.txt",
+//     (req, res) => {
+//         res.download(__dirname + "/2D612E6A40D7726C193A28AE10DA086F.txt");
+//     }
+// );
 
 // ! HOME PAGE
 const authCheckHome = (req, res, next) => {
@@ -60,33 +60,25 @@ router.get("/dash", authCheckDash, (req, res) => {
     // let query = room_history.find({ user_id: req.user.googleId })
     // let room_history = query.getFilter()
     let room_hist;      // variable for room-history
-    // res.send("i")
-    room_history.find(
-        {
+
+    room_history.find
+        ({
             user_id: req.user.googleId,  // identification for searching user history
-        },
-        function (err, docs) {   // here docs id the history data
-            if (err) {
-                console.log("Error fetching User history = " + err);
-            } else {
-                // console.log("Second function call : ", docs);
-                // room_hist = JSON.stringify(docs)
-                room_hist = docs;
-
-                // console.log(room_hist);
-
-                res.render("dash", {    // rendering page 
-                    user: req.user.name,
-                    mail: req.user.emailId,
-                    image: req.user.photo,
-                    googleId: req.user.googleId,
-                    room_hist: room_hist,
-                    appname: process.env.APPNAME,
-                });
-            }
-        }
-    );
-    // console.log(room_hist);
+        })
+        .sort([['time', -1]])
+        .then((docs) => {
+            res.render("dash", {    // rendering page 
+                user: req.user.name,
+                mail: req.user.emailId,
+                image: req.user.photo,
+                googleId: req.user.googleId,
+                room_hist: docs,
+                appname: process.env.APPNAME,
+            });
+        })
+        .catch((err) => {
+            console.log("Error fetching User history = " + err);
+        })
 });
 
 

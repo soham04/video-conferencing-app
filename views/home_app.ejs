@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= appname %> - 🔴 Conference</title>
+  <title><%= appname %> - <%= roomname %></title>
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="shortcut icon" type="image/x-icon" href="/img/logo/logo-color-square.svg" />
@@ -186,69 +186,31 @@
               </div>
             </div>
             <div class="conference__cameras--controls">
+             
+              <div class="conference__cameras--controls-mic" id="toggle-mic-stream">
+                <i class="lni lni-mic"></i>
+              </div>
+
               <div class="conference__cameras--controls-video" id="toggle-video-stream">
                 <i class="lni lni-video"></i>
+              </div>
+
+              <div class="conference__cameras--controls-mic" id="screen-share-button">
+                <i class="lni lni-display-alt"></i>
+              </div>
+
+              <div class="conference__cameras--controls-mic" id="conferenceWhiteboardBtn">
+                <i class="lni lni-blackboard"></i>
+              </div>
+
+              <div class="conference__cameras--controls-focus" id="conferenceFullScreenBtn">
+                <i class="fi fi-rr-expand"></i>
               </div>
 
               <div class="conference__cameras--controls-end">
                 <i class="lni lni-phone"></i>
               </div>
-              <div class="conference__cameras--controls-focus" id="conferenceFullScreenBtn">
-                <i class="fi fi-rr-expand"></i>
-              </div>
-              <div class="dropdown conference__cameras--controls-settings">
-                <div class="" id="conferenceControls" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="lni lni-more"></i>
-                </div>
-                <ul class="dropdown-menu" aria-labelledby="conferenceControls">
-                  <li>
-                    <div class="
-                          dropdown-item
-                          conference__cameras--controls-settings
-                          mediaSettingsToggle
-                        ">
-                      <i class="lni lni-cog"></i> Device Settings
-                    </div>
-                  </li>
-                  <!-- <li>
-                      <div
-                        class="
-                          dropdown-item
-                          conference__cameras--controls-screenshare "  id="screen-share-button" data-toggle="off"
-                      >
-                        <i class="lni lni-laptop-phone"></i> Screen Share
-                      </div>
-                    </li> -->
-                  <li>
-                    <div id="conferenceWhiteboardBtn" class="
-                          dropdown-item
-                          conference__cameras--controls-whiteboard
-                        ">
-                      <i class="lni lni-blackboard"></i> WhiteBoard
-                    </div>
-                  </li>
-                  <!-- <li>
-                      <div
-                        class="
-                          dropdown-item
-                          conference__cameras--controls-record
-                        "
-                      >
-                        <i class="lni lni-play"></i> Screen Record
-                      </div>
-                    </li>
-                    <li>
-                      <div
-                        class="
-                          dropdown-item
-                          conference__cameras--controls-speaker
-                        "
-                      >
-                        <i class="lni lni-volume-medium"></i> Speaker
-                      </div>
-                    </li> -->
-                </ul>
-              </div>
+              
             </div>
           </div>
           <div class="videos" style="display: none">
@@ -282,10 +244,10 @@
             <button id="" style="display: none">PAUSE 📸</button>
             <button id="" style="display: none">RESUME ⏯</button>
             <button id="record-button" style="display: none">RECORD🔴</button>
-            <button class="btn btn-outline-primary" id="screen-share-button"
-              style="position: fixed; bottom: 20px; left: 15px">
-              <i class="lni lni-laptop-phone"></i>
-            </button>
+            <!-- <button class="btn btn-outline-primary" id="screen-share-button" -->
+              <!-- style="position: fixed; bottom: 20px; left: 15px"> -->
+              <!-- <i class="lni lni-laptop-phone"></i> -->
+            <!-- </button> -->
             <button id="stop-record-button" style="display: none">
               STOP RECORD🟥
             </button>

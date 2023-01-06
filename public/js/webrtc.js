@@ -10,6 +10,7 @@ let messageForm;
 let messageInput;
 let messageButton;
 let toggleVideoStream;
+let toggleMicStream;
 let streams = [];
 let recordButton;
 var recorder;
@@ -75,6 +76,7 @@ function start() {
   messageInput = document.getElementById("message-input");
   messageButton = document.getElementById("send-button");
   toggleVideoStream = document.getElementById("toggle-video-stream");
+  toggleMicStream = document.getElementById("toggle-mic-stream");
   startStream = document.getElementById("start-stream");
   recordButton = document.getElementById("record-button");
   stopRecordButton = document.getElementById("stop-record-button");
@@ -120,10 +122,18 @@ function start() {
         // adding the local stream to the streams array
         streams.push(stream);
 
-        toggleVideoStream.addEventListener("click", (e) => {
+        toggleVideoStream.addEventListener("click", (e) => { // enable and disable camera 
           e.preventDefault();
+          console.log(stream.getVideoTracks());
           stream.getVideoTracks()[0].enabled =
             !stream.getVideoTracks()[0].enabled;
+        });
+
+        toggleMicStream.addEventListener("click", (e) => { // enable and disable mic 
+          e.preventDefault();
+          console.log(stream.getAudioTracks());
+          stream.getAudioTracks()[0].enabled =
+            !stream.getAudioTracks()[0].enabled;
         });
 
         document.getElementById("localVideo").srcObject = stream;
@@ -132,8 +142,12 @@ function start() {
 
       // set up websocket and message all existing clients
       .then(() => {
+
+        console.log("hi");
+
         socket = io();
         socket.on("message_from_server", (message) => {
+          console.log("hi");
           gotMessageFromServer(message);
         });
 
@@ -141,7 +155,7 @@ function start() {
           "join",
           JSON.stringify({
             displayName: localDisplayName,
-            uuid: localUuid,
+            uuid: localUuid,               // make this username draw from DB
             dest: "all",
             room: roomID,
           })
@@ -150,14 +164,16 @@ function start() {
         socket.on("chat-message", (data) => {
           // let tmp = JSON.parse(data)
 
-          // JSON structure
-          // message: message,
-          // room: roomID,
-          // uuid: localUuid,
-          // displayname: localDisplayName,
-          // proPic: proPic,
-          // use '.' to access these
-          // eg. data.proPic
+          /**
+           * JSON structure
+           * message: message,
+           * room: roomID,
+           * uuid: localUuid,
+           * displayname: localDisplayName,
+           * proPic: proPic,
+           * use '.' to access these
+           * eg. data.proPic
+           */
 
           if (data.uuid == localUuid) {
             appendMessage(true, data);
@@ -169,7 +185,7 @@ function start() {
 
         messageButton.addEventListener("click", (e) => {
           e.preventDefault();
-          console.log("clciked send meesage button");
+          console.log("clicked send message button");
           const message = messageInput.value;
           // appendMessage(`You: ${message}`);
           appendMessage(true, {
@@ -199,6 +215,7 @@ function start() {
 
         screenShareButton.addEventListener("click", (e) => {
           console.log('screen share')
+
           if (screenShareButton.getAttribute("data-toggle") == "on") {
 
             // Toggle camera
@@ -225,9 +242,13 @@ function start() {
             e.preventDefault();
             if (navigator.mediaDevices.getDisplayMedia) {
               navigator.mediaDevices.getDisplayMedia().then((stream) => {
-                videoChanger.replaceTrack(stream.getVideoTracks()[0]);
-                tmpNewStream = new MediaStream()
-                tmpNewStream.addTrack(stream.getVideoTracks()[0])
+                // videoChanger.replaceTrack(stream.getVideoTracks()[0]);
+                // tmpNewStream = new MediaStream()
+                // tmpNewStream.addTrack(stream.getVideoTracks()[0])
+
+                
+                videoChanger = peerConnections[peerUuid].pc.addTrack(track, localStream);
+
                 document.getElementById("localVideo").srcObject = tmpNewStream
               });
             }
@@ -653,7 +674,7 @@ function gotRemoteStream(event, peerUuid) {
 function peerDisconnectToast(name, status) {
   toast = `<div
           class="toast align-items-center"
-          data-bs-delay="3500"
+          data-bs-delay="2000"
           role="alert"
           aria-live="assertive"
           aria-atomic="true"
@@ -751,3 +772,6 @@ function createUUID() {
 }
 
 // ! END WEBRTC Signalling ---------------------------------------------------------------
+
+
+document.getElementById("codeMeetJoin").innerHTML = document.URL

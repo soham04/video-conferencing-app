@@ -15,14 +15,26 @@ module.exports = function (app) {
             let tmp = JSON.parse(message);
 
             console.log(tmp.room);
-            socket.join(tmp.room);
+            socket.join(tmp.room); // create room
 
-            if (message.length < 150) console.log("<- Received: %s", message);
-            else {
-                console.log("<- Received: %s", message.slice(0, 50));
-            }
+            // if (message.length < 150) console.log("<- Received: %s", message);
+            // else {
+            //     console.log("<- Received: %s", message.slice(0, 50));
+            // }
+
+            /**
+           * JSON structure
+           * message: message,
+           * room: roomID,
+           * uuid: localUuid,
+           * displayname: localDisplayName,
+           * proPic: proPic,
+           * use '.' to access these
+           * eg. data.proPic
+           */
 
             console.log("boradcasting to room :" + tmp.room);
+            console.log(tmp);
             socket.broadcast.to(tmp.room).emit("message_from_server", message);
         });
 
