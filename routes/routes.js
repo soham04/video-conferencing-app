@@ -22,7 +22,7 @@ const authCheckHome = (req, res, next) => {
     }
 };
 
-router.get("/", authCheckHome, (req, res) => {
+router.get("/", (req, res) => {
     // if user already loggedin, will directly go to dashboard
     // if not will go to actual home page 
     res.render("home", { appname: process.env.APPNAME });
