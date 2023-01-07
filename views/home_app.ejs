@@ -155,15 +155,16 @@
         </div>
         <div class="conference__window">
           <div class="conference__heading expand">
-            <button class="conference__heading--toggle btn btn-light" disabled>
+            <!-- <button class="conference__heading--toggle btn btn-light"   >
               <i class="fi fi-rr-angle-up"></i>
-            </button>
+            </button> -->
             <!-- <h2 class="conference__heading--title">
               <%= roomname %>
             </h2> -->
             <div class="conference__heading--tag">
-              <i class="lni lni-slideshare"></i>
-              <%= roomname %>
+              <!-- <i class="lni lni-slideshare"></i> -->
+              
+              <h4><%= roomname %></h4>
             </div>
             <div class="conference__heading--user conferenceInfoBtn">
               <div class="conference__heading--user-img">
@@ -227,6 +228,7 @@
                   width: 100%;
                   height: 100%;
                   object-fit: cover;
+                  border-style: inset;
                 "></canvas>
             <button class="whiteboard-close">
               <i class="lni lni-close"></i>
@@ -373,6 +375,8 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="/js/webrtc.js"></script>
+  <script src="/js/whiteBoard.js"></script>
+
   <!-- <script src="/js/screen.js"></script> -->
   <script>
     localDisplayName = '<%= user %>';
