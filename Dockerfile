@@ -1,7 +1,7 @@
 FROM node:lts-alpine
 
-# wokring directory in the container
-WORKDIR /app     
+# Create app directory
+WORKDIR /usr/src/app  
 
 COPY . .
 
@@ -11,4 +11,4 @@ RUN npm install --only=production
 
 CMD ["npm", "start"]
 
-EXPOSE 8000
+EXPOSE 3000

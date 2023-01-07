@@ -124,16 +124,22 @@
           <ul>
             <% for(var i=0; i < room_hist.length; i++) { var date=room_hist[i].time; %>
               <li class="meetHistoryItems" data-number="<%= i %>">
+                <a style="text-decoration:none;color: inherit;" href="/room/<%= room_hist[i].room_id %>">
                 <div class="dashboard__meetings--logo">
                   <i class="lni lni-slideshare"></i>
                 </div>
+                <div>
+                <h3><%= room_hist[i].meet_name %></h3>
                 <p>
-                  <%= room_hist[i].meet_name %> | <%= room_hist[i].room_id %>
+                 <%= room_hist[i].room_id %>
                 </p>
+              
                 <span>
                   <%= date.getDate() + ' ' + date.toLocaleString('default', { month: 'long' }) + ', ' +
                     date.getFullYear() %>
                 </span>
+              </div>
+            </a>
               </li>
               <% } %>
           </ul>
