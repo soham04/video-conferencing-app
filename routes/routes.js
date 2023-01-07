@@ -15,17 +15,22 @@ const room_history = require("../models/room-history")
 // ! HOME PAGE
 const authCheckHome = (req, res, next) => {
     // console.log("Currect user" + req.user);
-    if (!req.user) {
-        next(); // not loggedin
-    } else {
-        res.redirect("/dash");   // already loggedin       
-    }
+
 };
 
 router.get("/", (req, res) => {
     // if user already loggedin, will directly go to dashboard
     // if not will go to actual home page 
-    res.render("home", { appname: process.env.APPNAME });
+
+    if (!req.user) {
+        // next(); // not loggedin
+        res.render("home", { appname: process.env.APPNAME, loggedIn: false });
+    } else {
+        // res.redirect("/dash");   // already loggedin 
+        res.render("home", { appname: process.env.APPNAME, loggedIn: true });
+
+    }
+
 });
 
 // ! AUTH CHECK | DIRECT VIDEO CONFERENCE
