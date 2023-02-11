@@ -6,7 +6,7 @@ The project is made following the `MVC architecture`
 
 Deployed on https://callify.onrender.com/
 
-Software Requirements Specification (SRS) : [DOC](https://github.com/soham04/video-conferencing-app/blob/main/Callify%20SRS.docx)
+Software Requirements Specification (SRS) : [DOC](https://github.com/soham04/video-conferencing-app/raw/main/Callify%20SRS.docx)
 
 ---
 ## Installation
