@@ -4,7 +4,9 @@ A [WebRTC](https://webrtc.org/) based video conferencing web app.
 
 The project is made following the `MVC architecture`
 
-Deployed on https://peerply.herokuapp.com/
+Deployed on https://callify.onrender.com/
+
+Software Requirements Specification (SRS) : [DOC](https://github.com/soham04/video-conferencing-app/blob/main/Callify%20SRS.docx)
 
 ---
 ## Installation
