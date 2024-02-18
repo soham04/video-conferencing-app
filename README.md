@@ -1,4 +1,4 @@
-# Peerply, the video conferencing solution
+# Callify, the video conferencing solution
 
 A [WebRTC](https://webrtc.org/) based video conferencing web app.
 

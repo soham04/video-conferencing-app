@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+import pkg from 'mongoose';
+const { Schema, model } = pkg;
 
-const room_history_schema = new mongoose.Schema({
+const room_history_schema = new Schema({
     room_id: {
         type: String,
     },
@@ -27,6 +28,4 @@ const room_history_schema = new mongoose.Schema({
     },
 });
 
-const room_history = mongoose.model("room_history", room_history_schema);
-
-module.exports = room_history
+export const room_history = model("room_history", room_history_schema);
