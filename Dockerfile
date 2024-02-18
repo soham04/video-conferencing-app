@@ -1,14 +1,26 @@
+# Use the official Node.js LTS Alpine image as base
 FROM node:lts-alpine
 
-# Create app directory
+# Set the working directory inside the container
 WORKDIR /usr/src/app  
 
-COPY . .
+# Copy package.json and package-lock.json (if exists)
+COPY package*.json ./
 
+# Install dependencies
 RUN npm install --only=production
 
-# RUN npm start
+# Copy the rest of the application code
+COPY . .
 
-CMD ["npm", "start"]
+# Install development dependencies for building TypeScript
+RUN npm install
 
+# Build the TypeScript code
+RUN npm run build
+
+# Expose port 3000
 EXPOSE 3000
+
+# Command to run the application
+CMD ["npm", "start"]
