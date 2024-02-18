@@ -4,9 +4,14 @@ A [WebRTC](https://webrtc.org/) based video conferencing web app.
 
 The project is made following the `MVC architecture`
 
-Deployed on https://callify.onrender.com/
+Deployed on [https://ssss-szv1.onrender.com/](https://ssss-szv1.onrender.com/) | [https://callify.sohamshinde.co/](https://callify.sohamshinde.co/dash)
 
-Software Requirements Specification (SRS) : [DOC](https://github.com/soham04/video-conferencing-app/raw/main/Callify%20SRS.docx)
+Deployed details : 
+    Service : Render.com
+    Instance Type : Free 0.1 CPU 512 MB
+    Type : Docker deployment
+
+Software Requirements Specification (SRS) : [DOC](https://github.com/soham04/video-conferencing-app/raw/main/project-documents/Callify%20SRS.docx)
 
 ---
 ## Installation
